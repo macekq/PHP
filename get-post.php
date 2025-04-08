@@ -6,7 +6,7 @@
     <title>Document</title>
 </head>
 <body>
-    <!-- <form action="get-post.php" method="post">
+    <form action="get-post.php" method="post">
         <input type="text" id="jmeno" name="jmeno">
         <label for="jmeno">jmeno</label>
         <input type="text" id="prijmeni" name="prijmeni">
@@ -14,19 +14,19 @@
         <br><br>
         <input type="submit" value="submit">
     </form>
-    <br> -->
-    <form action="get-post.php" method="get">
+    <br>
+    <!-- <form action="get-post.php" method="get">
         <input type="number" id="num" name="num">
         <label for="num">mnozstvi</label>
         <br><br>
         <input type="submit" value="submit">
-    </form>
+    </form> -->
 </body>
 </html>
 <?php
 
-    // echo "pizdo{$_POST["jmeno"]}skap";
-    echo "pizdo{$_GET["num"]}skap";
+    echo "pizdo{$_POST["jmeno"]}skap";
+    // echo "pizdo{$_GET["num"]}skap";
 
 ?>
 
