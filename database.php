@@ -31,11 +31,11 @@
 <?php
 
     $username = "bombardinoCrocodilo";
-    $sql = "SELECT * FROM users WHERE user = '{$username}'";
+    $sql = "SELECT * FROM users WHERE username = '{$username}'";
 
     $result = mysqli_query($connection, $sql);
 
-    $arr = ["id", "user", "passwd", "date"];
+    $arr = ["id", "username", "passwd", "date"];
     
     if(mysqli_num_rows($result) > 0){
 
