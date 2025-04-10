@@ -1,6 +1,5 @@
 <?php
 
-
     $dbServer = "localhost";
     $dbUser = "root";
     $dbPasswd = "";
@@ -9,12 +8,7 @@
 
     $connection = mysqli_connect($dbServer, $dbUser, $dbPasswd, $dbName); //connection bude objekt s moji databazi
 
-    if($connection){
-        echo "databaze pripojena";
-
-    }else{
-        echo "nn";
-    }
+    if(!$connection) error_log("databazi nelze pripojit");
 ?>
 <!DOCTYPE html>
 <html lang="en">

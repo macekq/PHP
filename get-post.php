@@ -1,3 +1,16 @@
+<?php
+
+    $dbServer = "localhost";
+    $dbUser = "root";
+    $dbPasswd = "";
+    $dbName = "skap";
+    $connection = "";
+
+    $connection = mysqli_connect($dbServer, $dbUser, $dbPasswd, $dbName); //connection bude objekt s moji databazi
+
+    if(!$connection) error_log("databazi nelze pripojit");
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,7 +37,6 @@
 </body>
 </html>
 <?php
-
     echo "pizdo{$_POST["jmeno"]}skap";
     // echo "pizdo{$_GET["num"]}skap";
 

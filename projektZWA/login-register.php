@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="uvod.css">
+    <title>Document</title>
+</head>
+<body>
+
+    <div id="l-r">
+        <div class="chooseForm">
+            <div class="overRadio" id="chfl" style="background-color: rgb(50,50,50); color: white;">
+                <div>login</div>
+            </div>
+            <input type="radio" name="form" id="login">
+        </div>
+        <div class="chooseForm">
+            <div class="overRadio" id="chfr">    
+                <div>register</div>
+            </div>
+            <input type="radio" name="form" id="register">
+        </div>
+    </div>
+    <div class="formCont" id="loginForm">
+        <form method="post">
+            <div class="formDiv">
+                <div class="info">jméno:</div >
+                <div class="info">heslo:</div >
+            </div>
+            <div class="formDiv" style="left: 40%;">
+                <input class="input" type="text" id="nameL" name="nameL">
+                <input class="input" type="text" id="passL" name="passL">
+            </div>
+            <input type="submit" id="subBtt">
+        </form>    
+    </div>
+    <div class="formCont" id="registerForm">
+        <form method="post">
+            <div class="formDiv">
+                <div class="info">jméno:</div>
+                <div class="info">heslo:</div>
+                <div class="info">email:</div>
+                <div class="info">národnost:</div>
+            </div>
+            <div class="formDiv" style="left: 40%;">
+                <input class="input" type="text" id="nameR">
+                <input class="input" type="text" id="passR">
+                <input class="input" type="email" id="mailR">
+                <input class="input" type="text" id="statR">
+            </div>
+            <input type="submit" id="subBtt">
+        </form>
+    </div>
+    <script>
+        const registerForm = document.getElementById('registerForm'), loginForm = document.getElementById('loginForm')
+        const regCont = document.getElementById('chfr'), logCont = document.getElementById('chfl')
+
+        document.getElementById('login').addEventListener('click', () => {
+            loginForm.style.zIndex = 999
+            registerForm.style.zIndex = 0
+
+            logCont.style.backgroundColor = 'rgb(50,50,50)'
+            logCont.style.color = 'white'
+            regCont.style.backgroundColor = '#cccccc'
+            regCont.style.color = 'black'
+        })
+        document.getElementById('register').addEventListener('click', () => {
+            loginForm.style.zIndex = 0
+            registerForm.style.zIndex = 999
+
+            regCont.style.backgroundColor = 'rgb(50,50,50)'
+            regCont.style.color = 'white'
+            logCont.style.backgroundColor = '#cccccc'
+            logCont.style.color = 'black'
+        })
+    </script>
+</body>
+</html>
+<?php
+
+    if(isset($_POST["nameL"]) && isset($_POST["passL"])){
+        
+    }
+
+?>
