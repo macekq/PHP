@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iFrameWeb</title>
+</head>
+<body>
+    
+    <!-- Single secure form -->
+<form id="loginForm" method="POST" action="/login">
+    <input type="text" name="username" id="username">
+    <input type="password" name="password" id="password">
+    <button type="submit">Login</button>
+  </form>
+  
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Secure POST for credentials
+        fetch('/login', {
+            method: 'POST',
+            body: new FormData(this)
+        })
+        .then(response => response.json())
+        .then(data => {
+        if (data.success) {
+            // Communicate username to parent safely
+            window.parent.postMessage({
+            type: 'loginSuccess',
+            username: data.username
+            }, window.location.origin);
+            console.log(data);
+        }
+        });
+  });
+  </script>
+
+</body>
+</html>
