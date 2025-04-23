@@ -1,6 +1,7 @@
 <?php
     require "login-register.php";
     
+    echo "<script>console.log('username = " . $USERNAME . "')</script>"
 ?>
     <style>
         #mainCont{
@@ -11,7 +12,6 @@
     </style>
     <main style="background-color: black;" id="mainCont">
 
-        
 
     </main>
 

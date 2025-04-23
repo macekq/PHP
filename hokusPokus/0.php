@@ -14,7 +14,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-<style>
+<style> 
     #in{
         top: 0; left: 0;
         position: absolute;
@@ -23,25 +23,49 @@
         padding: 1%;
         color: white;
     }
-    input[type="submit"]{
+    #saveBtt{
+        position: absolute;
+        top: 99%;
+        transform: translateY(-100%);
+    }
+    form{
         position: absolute;
         top: 60vh; left: 0;
+    
+        padding: 1%;
     }   
 </style>
 <body>
-    <form method="post">
-        <textarea type="text" id="in" name="in"></textarea>
+
+    <textarea id="in" name="in"></textarea>
+    <input type="button" id="saveBtt" value="save">
+
+    <form method="get">
+        <label for="nazev">nazev souboru</label>
+        <input type="text" id="nazev" name="nazev">
         <input type="submit">
     </form>
+
+    <script>
+        document.getElementById('saveBtt').addEventListener("click", () => {
+            const input = document.getElementById('in')
+            
+            
+            // console.log("nazev: ", nazev)
+            console.log("content", input.value)
+        })
+    </script>
     <?php
-
-        if(isset($_POST["in"])){
-            // $text = $_POST["in"];
-            // echo "<script>console.log('" . $text . "')</script>";
-            // echo $text;
-
-            $text = "CREATE TABLE userFiles(nazevSouboru varchar() not null primary key, userId int not null, foreign key (userId) references projektZWA (id));";
-            mysqli_query($connection, $text);
+        $soubor = "";
+        if(isset($_GET["nazev"])){
+            $soubor = $_GET["nazev"];
+            
+            $file = fopen($soubor, "w");
+            if($file){
+                $content = file_get_contents($soubor);
+                echo "skap";
+                echo "<script>test()</script>";
+            }
         }
     ?>
 </body>

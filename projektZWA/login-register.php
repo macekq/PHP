@@ -101,13 +101,11 @@
 <?php
     if(isset($_POST["nameR"]) && isset($_POST["passR"]) && isset($_POST["mailR"]) && isset($_POST["statR"])){
 
-        echo "skap";
-
         $name = $_POST["nameR"]; $passwd = $_POST["passR"]; $email = $_POST["mailR"]; $stat = $_POST["statR"];
 
         $sql = "INSERT INTO projektZWA (jmeno, heslo, email, stat, datum) VALUES ('$name', '$passwd', '$email', '$stat', CURDATE())";
-
         mysqli_query($connection, $sql);
+        
     }
     if(isset($_POST["nameL"]) && isset($_POST["passL"])){
         $name = $_POST["nameL"]; $passwd = $_POST["passL"];
@@ -123,6 +121,17 @@
                 $USERNAME = $row["jmeno"];
 
                 echo "<script>hideForms()</script>";
+
+                $sql = "SELECT jmeno FROM projektZWA";
+                $result = mysqli_query($connection, $sql);
+
+                while($row = mysqli_fetch_assoc($result)){
+                    echo "<br>" . $row["jmeno"];
+                    $dir = "data/". $row["jmeno"];
+                    if(!file_exists($dir)){
+                        mkdir($dir);
+                    }
+                }
             }
         }else{
             echo "<script>window.alert('jmeno neexistuje nebo se neshoduje heslo')</script>";
