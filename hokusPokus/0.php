@@ -47,6 +47,9 @@
     </form>
 
     <script>
+        function writeOutContent(content){
+            document.getElementById('in').innerText = content;
+        }
         document.getElementById('saveBtt').addEventListener("click", () => {
             const input = document.getElementById('in')
             
@@ -56,15 +59,16 @@
         })
     </script>
     <?php
-        $soubor = "";
+        $soubor = ""; $content;
         if(isset($_GET["nazev"])){
             $soubor = $_GET["nazev"];
             
             $file = fopen($soubor, "w");
             if($file){
-                $content = file_get_contents($soubor);
-                echo "skap";
-                echo "<script>test()</script>";
+                // $content = file_get_contents($soubor); 
+                // echo "<script>writeOutContent('" . $content . "')</script>";
+                $content = 0;
+
             }
         }
     ?>

@@ -38,17 +38,16 @@
         const input = document.getElementById('input')
 
         $.ajax({
-        url: 'process.php',
-        type: 'POST',
-        data: { name: 'John Doe' },
-        success: function(response) {
-            console.log(response) // Handle response from PHP
-        },
-        error: function(error) {
-            console.error(error)
-        },
+            url: 'process.php',
+            type: 'POST',
+            data: { name: 'John Doe' },
+            success: function(response) {
+                console.log(response) // Handle response from PHP
+            },
+            error: function(error) {
+                console.error(error)
+            },
         });
-
 
     </script>
 
