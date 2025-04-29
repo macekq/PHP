@@ -20,39 +20,54 @@
         position: absolute;
         width: 100vw; height: 50vh;
         background-color: rgb(50,50,50);
-        padding: 1%;
+        padding: 16px;
         color: white;
+        z-index: 0;
     }
     #saveBtt{
         position: absolute;
         top: 99%;
         transform: translateY(-100%);
     }
-    form{
+    #f1{
         position: absolute;
-        top: 60vh; left: 0;
+        top: 0; left: 0;
     
         padding: 1%;
+    }
+    #f2{
+        position: absolute;
+        top: 80vh;
     }   
 </style>
 <body>
+    <form method="post" id="f1">
+        <textarea id="in" name="in"></textarea>
 
-    <textarea id="in" name="in"></textarea>
-    <input type="button" id="saveBtt" value="save">
-
-    <form method="get">
-        <label for="nazev">nazev souboru</label>
-        <input type="text" id="nazev" name="nazev">
+        <div style="position: absolute; top: 60vh;">
+            <label for="nazev">nazev souboru</label>
+            <input type="text" id="nazev" name="nazev">
+            <input type="submit" id="saveBtt" value="save">
+        </div>
+    </form>
+    <form method="post" id="f2">
+        <label for="nazevSouboru">otevrit soubor</label>
+        <input type="text" id="nazevSouboru" name="nazevSouboru">
         <input type="submit">
     </form>
 
     <script>
         function writeOutContent(content){
+            for(let i of content){
+                if(i == "­■"){
+                    content[i] = "\n"
+                }
+            }
+            
             document.getElementById('in').innerText = content;
         }
         document.getElementById('saveBtt').addEventListener("click", () => {
             const input = document.getElementById('in')
-            
             
             // console.log("nazev: ", nazev)
             console.log("content", input.value)
@@ -60,15 +75,29 @@
     </script>
     <?php
         $soubor = ""; $content;
-        if(isset($_GET["nazev"])){
-            $soubor = $_GET["nazev"];
+        if(isset($_POST["nazev"])){
+            $soubor = $_POST["nazev"];
+            $content = $_POST["in"];
             
             $file = fopen($soubor, "w");
             if($file){
+                file_put_contents($soubor, $content);
                 // $content = file_get_contents($soubor); 
                 // echo "<script>writeOutContent('" . $content . "')</script>";
-                $content = 0;
+            }
+        }
+        if(isset($_POST["nazevSouboru"])){
+            $nazev = $_POST["nazevSouboru"];
 
+            if(!file_exists($nazev)){
+                echo "<script>window.alert('spatny nazev')</script>";
+            }else{
+                echo "true2";
+                $content = file_get_contents($nazev);
+                $clean_text = str_replace(["\r\n", "\r", "\n"], '■', $content);
+                echo $content;
+                echo $clean_text;
+                echo "<script>writeOutContent('" . $clean_text . "')</script>";
             }
         }
     ?>
