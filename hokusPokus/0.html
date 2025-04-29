@@ -6,8 +6,40 @@
     <title>Document</title>
 </head>
 <style>
-    #mainCont{
-
+    input[type="radio"]{
+        position: absolute;
+        width: 95%; height: 82%;
+    }
+    input[type="radio"]{
+        position: relative;
+        top: 50%; left: 50%;
+        transform: translate(-52%, -60%);
+        z-index: 999;
+        /* opacity: 0; */
+    }
+    #optionsMenu{
+        display: flex;
+    }
+    .OMconts{
+        width: 20vw; height: 2vh;
+        border: 2px solid black;
+        border-radius: 5px;
+        margin-right: 0.6ch;
+    }
+    .OMnazvy{
+        position: absolute;
+        width: 70%;
+        text-align: center;
+    }
+    .OMnazvy{
+        position: relative;
+        top: 50%; left: 50%;
+        transform: translate(-50%, -180%);
+    }
+    #navigace{
+        border: 2px solid black;
+        border-radius: 5px;
+        padding: 0.6%;
     }
 </style>
 <body>
@@ -16,16 +48,16 @@
 
         <nav id="navigace">
             <nav id="optionsMenu">
-                <div>
-                    <input type="radio" name="options">
+                <div class="OMconts">
+                    <input type="radio" name="options" id="editorR">
                     <div class="OMnazvy">EDITOR</div>
                 </div>
-                <div>
-                    <input type="radio" name="options">
+                <div class="OMconts">
+                    <input type="radio" name="options" id="cteckaR">
                     <div class="OMnazvy">ČTEČKA</div>
                 </div>
-                <div>
-                    <input type="radio" name="options">
+                <div class="OMconts">
+                    <input type="radio" name="options" id="souboryR">
                     <div class="OMnazvy">SOUBORY</div>
                 </div>
             </nav>
