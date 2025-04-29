@@ -37,8 +37,14 @@
     }
     #f2{
         position: absolute;
-        top: 80vh;
-    }   
+        top: 70vh;
+    }
+    #box{
+        position: absolute;
+        top: 100%;
+        transform: translateY(-100%);
+        width: 100vw; height: 20vh;
+    }
 </style>
 <body>
     <form method="post" id="f1">
@@ -56,15 +62,14 @@
         <input type="submit">
     </form>
 
+    <div id="box">
+        
+    </div>
+
     <script>
         function writeOutContent(content){
-            for(let i of content){
-                if(i == "­■"){
-                    content[i] = "\n"
-                }
-            }
-            
-            document.getElementById('in').innerText = content;
+            console.log(content.split('■').join("\n"))
+            document.getElementById('box').innerText = content.split('■').join('\n')
         }
         document.getElementById('saveBtt').addEventListener("click", () => {
             const input = document.getElementById('in')
@@ -95,8 +100,9 @@
                 echo "true2";
                 $content = file_get_contents($nazev);
                 $clean_text = str_replace(["\r\n", "\r", "\n"], '■', $content);
-                echo $content;
-                echo $clean_text;
+                // echo $content;
+                // echo $clean_text;
+                echo "<script>window.alert('{$clean_text}')</script>";
                 echo "<script>writeOutContent('" . $clean_text . "')</script>";
             }
         }

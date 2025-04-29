@@ -117,12 +117,12 @@
 
             while($row = mysqli_fetch_assoc($result)){
     
-                echo "<script>console.log('" . $row['jmeno'] ."','". $row['heslo'] . "','". $row['email'] . "','". $row['datum'] . "')</script>";
-                $USERNAME = $row["jmeno"];
+                // echo "<script>console.log('" . $row['jmeno'] ."','". $row['heslo'] . "','". $row['email'] . "','". $row['datum'] . "')</script>";
+                // $USERNAME = $row["jmeno"];
 
                 echo "<script>hideForms()</script>";
 
-                $sql = "SELECT jmeno FROM projektZWA";
+                $sql = "SELECT jmeno FROM projektZWA WHERE jmeno = '{$name}'";
                 $result = mysqli_query($connection, $sql);
 
                 while($row = mysqli_fetch_assoc($result)){
