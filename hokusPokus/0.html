@@ -6,6 +6,9 @@
     <title>Document</title>
 </head>
 <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cal+Sans&family=Roboto:wght@700&display=swap" rel="stylesheet');
+    @import url('href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet');
+    
     input[type="radio"]{
         position: absolute;
         width: 95%; height: 82%;
@@ -20,11 +23,24 @@
     #optionsMenu{
         display: flex;
     }
+    #mainCont{
+        overflow: hidden;
+        position: absolute;
+        top: 0.5vh; left: 0.5vw;
+
+        border-radius: 5px;
+        /* background-color: rgba(255,0,0,0.2); */
+        width: 99vw; height: 99vh;
+    }
+    body{
+        box-shadow: inset 0 0 5px black;
+    }
     .OMconts{
         width: 20vw; height: 2vh;
         border: 2px solid black;
         border-radius: 5px;
         margin-right: 0.6ch;
+        /* background-color: red; */
     }
     .OMnazvy{
         position: absolute;
@@ -37,33 +53,86 @@
         transform: translate(-50%, -180%);
     }
     #navigace{
+        font-family: "Cal Sans", sans-serif;
+        font-style: normal;
+
         border: 2px solid black;
         border-radius: 5px;
-        padding: 0.6%;
+        padding: 0.3vh;
     }
+    #idk{
+        position: absolute;
+        top: 0; left: 0;
+        /* background-color: rgba(0,0,255,0.2); */
+        width: 100vw; height: 100vh;
+        box-shadow: inset 0 0 10px black;
+    }
+    #workspace{
+
+        height: 100%;
+        background-color: rgba(0,255,0,0.2);
+    }
+    #editorWS{
+        background-color: red;
+    }
+    #cteckaWS{
+        background-color: blue;
+    }
+    #souboryWS{
+        background-color: green;
+    }
+    .WS{
+        width: 100%; height: 100%;
+    }
+    
 </style>
 <body>
-    
-    <main id="mainCont">
-
-        <nav id="navigace">
-            <nav id="optionsMenu">
-                <div class="OMconts">
-                    <input type="radio" name="options" id="editorR">
-                    <div class="OMnazvy">EDITOR</div>
-                </div>
-                <div class="OMconts">
-                    <input type="radio" name="options" id="cteckaR">
-                    <div class="OMnazvy">ČTEČKA</div>
-                </div>
-                <div class="OMconts">
-                    <input type="radio" name="options" id="souboryR">
-                    <div class="OMnazvy">SOUBORY</div>
-                </div>
+    <div id="idk">
+        <main id="mainCont">
+            <nav id="navigace">
+                <nav id="optionsMenu">
+                    <div class="OMconts" id="editorBtt">
+                        <input type="radio" name="options" id="editorR">
+                        <div class="OMnazvy">EDITOR</div>
+                    </div>
+                    <div class="OMconts" id="cteckaBtt">
+                        <input type="radio" name="options" id="cteckaR">
+                        <div class="OMnazvy">ČTEČKA</div>
+                    </div>
+                    <div class="OMconts" id="souboryBtt">
+                        <input type="radio" name="options" id="souboryR">
+                        <div class="OMnazvy">SOUBORY</div>
+                    </div>
+                </nav>
             </nav>
-        </nav>
+            <nav id="workspace">
+                <div class="WS" id="editorWS"></div>
+                <div class="WS" id="cteckaWS"></div>
+                <div class="WS" id="souboryWS"></div>
+            </nav>
+        </main>
+    </div>
 
-    </main>
+    <script>
+        const editor = document.getElementById('editorBtt'), ctecka = document.getElementById('cteckaBtt'), soubory = document.getElementById('souboryBtt')
+        const editorR = document.getElementById('editorR'), cteckaR = document.getElementById('cteckaR'), souboryR = document.getElementById('souboryR')
+        const editorWS = document.getElementById('editorWS'), cteckaWS = document.getElementById('cteckaWS'), souboryWS = document.getElementById('souboryWs')
+        const bgArr = [editor, ctecka, soubory], bttArr = [editorR, cteckaR, souboryR], wsArr = [editorWS, cteckaWS, souboryWS]
+        
+        for(let i = 0; i<bgArr.length; i++){
+            bttArr[i].addEventListener('change', () => {
 
+                if(bttArr[i].checked){
+                    bgArr[i].style.backgroundColor = "red"
+
+                    for(let j = 0; j<bgArr.length; j++){
+                        if(j!=i){
+                            bgArr[j].style.backgroundColor = 'white'
+                        }
+                    }
+                }
+            });
+        }
+    </script>
 </body>
 </html>
