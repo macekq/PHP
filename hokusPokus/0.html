@@ -27,20 +27,29 @@
         overflow: hidden;
         position: absolute;
         top: 0.5vh; left: 0.5vw;
-
+        /* box-shadow: ; */
         border-radius: 5px;
         /* background-color: rgba(255,0,0,0.2); */
         width: 99vw; height: 99vh;
     }
-    body{
-        box-shadow: inset 0 0 5px black;
-    }
     .OMconts{
-        width: 20vw; height: 2vh;
+        transition: 0.1s;
+        width: 20vh; height: 2vh;
         border: 2px solid black;
         border-radius: 5px;
         margin-right: 0.6ch;
         /* background-color: red; */
+    }
+    @media(orientation: portrait){
+        .OMconts{
+            width: 20vw;
+        }
+        .cover{
+            z-index: 999;
+            position: relative;
+            width: 20vw;
+            transform: translateY(5px);
+        }
     }
     .OMnazvy{
         position: absolute;
@@ -65,24 +74,44 @@
         top: 0; left: 0;
         /* background-color: rgba(0,0,255,0.2); */
         width: 100vw; height: 100vh;
-        box-shadow: inset 0 0 10px black;
+        box-shadow: inset 0 0 3px black;
     }
     #workspace{
-
         height: 100%;
-        background-color: rgba(0,255,0,0.2);
     }
     #editorWS{
         background-color: red;
     }
     #cteckaWS{
         background-color: blue;
+        transform: translateY(-100%);
     }
     #souboryWS{
         background-color: green;
+        transform: translateY(-200.05%);
     }
     .WS{
+        position: absolute;
+    }
+    .WS{
+        transition: 0.5s;
+        position: relative;
         width: 100%; height: 100%;
+    }
+    .cover{
+        position: absolute;
+        width: 100%; height: 0.75vh;
+        /* background-color: rgba(0,0,255,0.4); */
+        background-color: white;
+        opacity: 0;
+    }
+    .cover{
+        transition: 0.1s;
+        position: relative;
+        top: -1vh;
+        transform: translate(-2px, -110%);
+        border-left: 2px solid black;
+        border-right: 2px solid black;
     }
     
 </style>
@@ -91,24 +120,51 @@
         <main id="mainCont">
             <nav id="navigace">
                 <nav id="optionsMenu">
-                    <div class="OMconts" id="editorBtt">
+                    <div class="OMconts" id="editorBtt"> 
                         <input type="radio" name="options" id="editorR">
-                        <div class="OMnazvy">EDITOR</div>
+                        <div class="OMnazvy">EDITOR </div>
+                        <div class="cover" id="editorC"></div>
                     </div>
                     <div class="OMconts" id="cteckaBtt">
                         <input type="radio" name="options" id="cteckaR">
                         <div class="OMnazvy">ČTEČKA</div>
+                        <div class="cover" id="cteckaC"></div>
                     </div>
                     <div class="OMconts" id="souboryBtt">
                         <input type="radio" name="options" id="souboryR">
                         <div class="OMnazvy">SOUBORY</div>
+                        <div class="cover" id="souboryC"></div>
                     </div>
                 </nav>
             </nav>
             <nav id="workspace">
-                <div class="WS" id="editorWS"></div>
-                <div class="WS" id="cteckaWS"></div>
-                <div class="WS" id="souboryWS"></div>
+                <div class="WS" id="editorWS">
+                    <div style="font-size: 2em; font-weight: bold;">8 duvodu proc nemam rad cerne</div>
+                    <pre>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                        Quae debitis libero deserunt voluptas accusantium, ex quam quos provident,
+                        corporis numquam exercitationem laudantium dolorem beatae.
+                        Quibusdam reprehenderit obcaecati placeat minus nulla?
+                    </pre>
+                </div>
+                <div class="WS" id="cteckaWS">
+                    <div style="font-size: 2em; font-weight: bold;">jak zkopnout dedu z kopce</div>
+                    <pre>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                        Quae debitis libero deserunt voluptas accusantium, ex quam quos provident,
+                        corporis numquam exercitationem laudantium dolorem beatae.
+                        Quibusdam reprehenderit obcaecati placeat minus nulla?
+                    </pre>
+                </div>
+                <div class="WS" id="souboryWS">
+                    <div style="font-size: 2em; font-weight: bold;">proc kolumbus dovezl tabak a syfilis</div>
+                    <pre>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                        Quae debitis libero deserunt voluptas accusantium, ex quam quos provident,
+                        corporis numquam exercitationem laudantium dolorem beatae.
+                        Quibusdam reprehenderit obcaecati placeat minus nulla?
+                    </pre>
+                </div>
             </nav>
         </main>
     </div>
@@ -116,18 +172,34 @@
     <script>
         const editor = document.getElementById('editorBtt'), ctecka = document.getElementById('cteckaBtt'), soubory = document.getElementById('souboryBtt')
         const editorR = document.getElementById('editorR'), cteckaR = document.getElementById('cteckaR'), souboryR = document.getElementById('souboryR')
-        const editorWS = document.getElementById('editorWS'), cteckaWS = document.getElementById('cteckaWS'), souboryWS = document.getElementById('souboryWs')
-        const bgArr = [editor, ctecka, soubory], bttArr = [editorR, cteckaR, souboryR], wsArr = [editorWS, cteckaWS, souboryWS]
+        const editorWS = document.getElementById('editorWS'), cteckaWS = document.getElementById('cteckaWS'), souboryWS = document.getElementById('souboryWS')
+        const editorC = document.getElementById('editorC'), cteckaC = document.getElementById('cteckaC'), souboryC = document.getElementById('souboryC')
+
+        const bgArr = [editor, ctecka, soubory], bttArr = [editorR, cteckaR, souboryR]
+        const wsArr = [editorWS, cteckaWS, souboryWS], cArr = [editorC, cteckaC, souboryC]
         
+        cteckaWS.style.zIndex = 999
+
+        let c2 = 0
         for(let i = 0; i<bgArr.length; i++){
+
             bttArr[i].addEventListener('change', () => {
 
                 if(bttArr[i].checked){
-                    bgArr[i].style.backgroundColor = "red"
+
+                    bgArr[i].style.backgroundColor = "white"
+                    cArr[i].style.opacity = "1"
+                    wsArr[i].style.zIndex = "999"
+                    wsArr[i].style.opacity = "1"
 
                     for(let j = 0; j<bgArr.length; j++){
+                        let c = 0
                         if(j!=i){
-                            bgArr[j].style.backgroundColor = 'white'
+                            bgArr[j].style.backgroundColor = 'rgb(150,150,150)'
+                            cArr[j].style.opacity = "0"
+                            wsArr[j].style.zIndex = "0"
+                            wsArr[j].style.opacity = "0"
+                            c++
                         }
                     }
                 }
