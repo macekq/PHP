@@ -1,0 +1,178 @@
+@import url('https://fonts.googleapis.com/css2?family=Cal+Sans&family=Roboto:wght@700&display=swap" rel="stylesheet');
+@import url('href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet');
+
+body{
+    font-family: "Cal Sans", sans-serif;
+}
+input[type="radio"]{
+    position: absolute;
+    width: 95%; height: 82%;
+}
+input[type="radio"]{
+    position: relative;
+    top: 50%; left: 50%;
+    transform: translate(-52%, -60%);
+    z-index: 999;
+    opacity: 0;
+    cursor: pointer;
+}
+#optionsMenu{
+    display: flex;
+}
+#mainCont{
+    overflow: hidden;
+    position: absolute;
+    top: 0.5vh; left: 0.5vw;
+    /* box-shadow: ; */
+    border-radius: 5px;
+    /* background-color: rgba(255,0,0,0.2); */
+    width: 99vw; height: 99vh;
+}
+.OMconts{
+    transition: 0.1s;
+    width: 20vh; height: 2vh;
+    border: 0.2vh solid black;
+    border-radius: 5px;
+    margin-right: 0.4vh;
+    /* background-color: red; */
+}
+.OMconts:hover{
+    text-shadow: 2px 2px 0 rgb(200,200,200);
+}
+.OMnazvy{
+    position: absolute;
+    width: 70%;
+    text-align: center;
+}
+.OMnazvy{
+    position: relative;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -180%);
+}
+#navigace{
+    font-style: normal;
+    border: 0.2vh solid black;
+    border-radius: 5px;
+    padding: 0.3vh;
+}
+#idk{
+    position: absolute;
+    top: 0; left: 0;
+    /* background-color: rgba(0,0,255,0.2); */
+    width: 100vw; height: 100vh;
+    box-shadow: inset 0 0 3px black;
+}
+#workspace{
+    transform: translateY(1%);
+    height: 100%;
+}
+#editorWS{
+    background-color: red;
+    opacity: 0;
+}
+#cteckaWS{
+    background-color: blue;
+    transform: translateY(-100%);
+    opacity: 0;
+}
+#souboryWS{
+    border: 2px solid gray;
+    transform: translateY(-200.05%);
+}
+/*SOUBORY*/
+#adresaSoubory{
+    position: absolute;
+}
+#adresaSoubory{
+    width: 60vw; height: 5vw;
+    position: relative;
+    left: 50%; transform: translateX(-50%);
+    /* background-color: rgba(255,0,0,0.2); */
+    display: flex;
+    justify-content: center;
+    font-size: 1.2em;
+    border-bottom: 2px solid black;
+}
+#souboryLink nav{
+    position: absolute;
+}
+#souboryLink nav{
+    position: relative;
+    top: 50%; transform: translateY(-50%);
+}
+#souboryLink{
+    font-family: Arial, Helvetica, sans-serif;
+}
+#adresaSoubory div{
+    line-height: 5vw;
+    font-weight: bold;
+    width: 5vw;
+}
+#adresaSoubory button{
+    background-color: rgba(0,0,0,0);
+    border: 0;
+    cursor: pointer;
+}
+#adresaSoubory img{
+    height: 4vw;
+}
+#obsahDirList{
+    position: absolute;
+}
+#obsahDirList{
+    position: relative;
+    left: 50%; transform: translateX(-50%);
+    width: 80vw;
+}
+#obsahDirList li nav{
+    width: 100%;
+    /* background-color: rgba(255,0,0,0.2); */
+}
+#obsahDirList li{
+    height: 2vh;
+    /* background-color: rgba(0,0,255,0.2); */
+    border-bottom: 2px solid black;
+    display: flex;
+}
+
+@media(orientation: portrait){
+    /* #adresaSoubory{
+        width: 50vw; height: 5vw;
+    } */
+}
+/*SOUBORY*/
+.WS{
+    position: absolute;
+}
+.WS{
+    transition: 0.5s;
+    position: relative;
+    width: 100%; height: 100%;
+}
+.cover{
+    position: absolute;
+    width: 100%; height: 0.75vh;
+    /* background-color: rgba(0,0,255,0.4); */
+    background-color: white;
+    opacity: 0;
+}
+.cover{
+    transition: 0.1s;
+    position: relative;
+    top: -2.6vh;
+    transform: translate(-0.15vh, 100%);
+    border-left: 0.2vh solid black;
+    border-right: 0.2vh solid black;
+}
+@media(orientation: portrait){
+    .OMconts{
+        width: 20vw;
+    }
+    .cover{
+        top: -2.6vh;
+        z-index: 999;
+        position: relative;
+        width: 20vw;
+        transform: translate(-0.15vh, 100%);
+    }
+}

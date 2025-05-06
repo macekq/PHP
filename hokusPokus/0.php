@@ -69,7 +69,7 @@
     <script>
         function writeOutContent(content){
             console.log(content.split('■').join("\n"))
-            document.getElementById('box').innerText = content.split('■').join('\n')
+            document.getElementById('in').value = content.split('■').join('\n')
         }
         document.getElementById('saveBtt').addEventListener("click", () => {
             const input = document.getElementById('in')

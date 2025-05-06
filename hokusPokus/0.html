@@ -4,117 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="styl.css">
 </head>
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Cal+Sans&family=Roboto:wght@700&display=swap" rel="stylesheet');
-    @import url('href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet');
-    
-    input[type="radio"]{
-        position: absolute;
-        width: 95%; height: 82%;
-    }
-    input[type="radio"]{
-        position: relative;
-        top: 50%; left: 50%;
-        transform: translate(-52%, -60%);
-        z-index: 999;
-        /* opacity: 0; */
-    }
-    #optionsMenu{
-        display: flex;
-    }
-    #mainCont{
-        overflow: hidden;
-        position: absolute;
-        top: 0.5vh; left: 0.5vw;
-        /* box-shadow: ; */
-        border-radius: 5px;
-        /* background-color: rgba(255,0,0,0.2); */
-        width: 99vw; height: 99vh;
-    }
-    .OMconts{
-        transition: 0.1s;
-        width: 20vh; height: 2vh;
-        border: 2px solid black;
-        border-radius: 5px;
-        margin-right: 0.6ch;
-        /* background-color: red; */
-    }
-    @media(orientation: portrait){
-        .OMconts{
-            width: 20vw;
-        }
-        .cover{
-            z-index: 999;
-            position: relative;
-            width: 20vw;
-            transform: translateY(5px);
-        }
-    }
-    .OMnazvy{
-        position: absolute;
-        width: 70%;
-        text-align: center;
-    }
-    .OMnazvy{
-        position: relative;
-        top: 50%; left: 50%;
-        transform: translate(-50%, -180%);
-    }
-    #navigace{
-        font-family: "Cal Sans", sans-serif;
-        font-style: normal;
-
-        border: 2px solid black;
-        border-radius: 5px;
-        padding: 0.3vh;
-    }
-    #idk{
-        position: absolute;
-        top: 0; left: 0;
-        /* background-color: rgba(0,0,255,0.2); */
-        width: 100vw; height: 100vh;
-        box-shadow: inset 0 0 3px black;
-    }
-    #workspace{
-        height: 100%;
-    }
-    #editorWS{
-        background-color: red;
-    }
-    #cteckaWS{
-        background-color: blue;
-        transform: translateY(-100%);
-    }
-    #souboryWS{
-        background-color: green;
-        transform: translateY(-200.05%);
-    }
-    .WS{
-        position: absolute;
-    }
-    .WS{
-        transition: 0.5s;
-        position: relative;
-        width: 100%; height: 100%;
-    }
-    .cover{
-        position: absolute;
-        width: 100%; height: 0.75vh;
-        /* background-color: rgba(0,0,255,0.4); */
-        background-color: white;
-        opacity: 0;
-    }
-    .cover{
-        transition: 0.1s;
-        position: relative;
-        top: -1vh;
-        transform: translate(-2px, -110%);
-        border-left: 2px solid black;
-        border-right: 2px solid black;
-    }
-    
-</style>
 <body>
     <div id="idk">
         <main id="mainCont">
@@ -157,19 +48,40 @@
                     </pre>
                 </div>
                 <div class="WS" id="souboryWS">
-                    <div style="font-size: 2em; font-weight: bold;">proc kolumbus dovezl tabak a syfilis</div>
-                    <pre>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Quae debitis libero deserunt voluptas accusantium, ex quam quos provident,
-                        corporis numquam exercitationem laudantium dolorem beatae.
-                        Quibusdam reprehenderit obcaecati placeat minus nulla?
-                    </pre>
+                    
+                    <div id="adresaSoubory">
+                        <div>url - </div>
+                        <a href="http://127.0.0.1:5500/hokusPokus/0.html" id="souboryLink"><nav id="cpLink">http://127.0.0.1:5500/hokusPokus/0.html</nav></a>
+                        <div id="cpBttCont">
+                            <button type="button" name="cpDir" id="cpDir" value="copy" onclick="ctrlC('cpLink')">
+                                <img src="assets/copy.png">
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="obsahDir">
+                        <ul id="obsahDirList">
+                            <li class="soubor">
+                                <nav>skap.php</nav>
+                                <img src="assets/file.png">
+                            </li>
+                            <li class="slozka">
+                                <nav>assets</nav>
+                                <img src="assets/arrow.png">
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </nav>
         </main>
     </div>
 
     <script>
+        function ctrlC(id){
+            const link = document.getElementById(id).innerText
+
+            navigator.clipboard.writeText(link)
+        }   
         const editor = document.getElementById('editorBtt'), ctecka = document.getElementById('cteckaBtt'), soubory = document.getElementById('souboryBtt')
         const editorR = document.getElementById('editorR'), cteckaR = document.getElementById('cteckaR'), souboryR = document.getElementById('souboryR')
         const editorWS = document.getElementById('editorWS'), cteckaWS = document.getElementById('cteckaWS'), souboryWS = document.getElementById('souboryWS')
@@ -178,9 +90,6 @@
         const bgArr = [editor, ctecka, soubory], bttArr = [editorR, cteckaR, souboryR]
         const wsArr = [editorWS, cteckaWS, souboryWS], cArr = [editorC, cteckaC, souboryC]
         
-        cteckaWS.style.zIndex = 999
-
-        let c2 = 0
         for(let i = 0; i<bgArr.length; i++){
 
             bttArr[i].addEventListener('change', () => {
@@ -193,13 +102,11 @@
                     wsArr[i].style.opacity = "1"
 
                     for(let j = 0; j<bgArr.length; j++){
-                        let c = 0
                         if(j!=i){
                             bgArr[j].style.backgroundColor = 'rgb(150,150,150)'
                             cArr[j].style.opacity = "0"
                             wsArr[j].style.zIndex = "0"
                             wsArr[j].style.opacity = "0"
-                            c++
                         }
                     }
                 }
