@@ -39,6 +39,10 @@
         position: absolute;
         top: 70vh;
     }
+    #f3{
+        position: absolute;
+        top: 80vh;
+    }
     #box{
         position: absolute;
         top: 100%;
@@ -62,9 +66,11 @@
         <input type="submit">
     </form>
 
-    <div id="box">
-        
-    </div>
+    <form method="post" id="f3">
+        <label for="dir">dir</label>
+        <input type="text" id="dir" name="dir">
+        <input type="submit">
+    </form>
 
     <script>
         function writeOutContent(content){
@@ -104,6 +110,17 @@
                 // echo $clean_text;
                 echo "<script>window.alert('{$clean_text}')</script>";
                 echo "<script>writeOutContent('" . $clean_text . "')</script>";
+            }
+        }
+
+        if(isset($_POST["dir"])){
+            $dir = $_POST["dir"];
+            $files = scandir($dir);
+
+            foreach ($files as $file) {
+                if ($file != '.' && $file != '..') {
+                    echo "<script>console.log('" . $file . "')</script>";
+                }
             }
         }
     ?>

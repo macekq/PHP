@@ -134,7 +134,22 @@ input[type="radio"]{
     border-bottom: 2px solid black;
     display: flex;
 }
-
+#dirOptions img{
+    width: 2vh;
+}
+#dirOptions nav button{
+    height: 2vh;
+}
+#dirOptions{
+    position: absolute;
+}
+#dirOptions{
+    position: relative;
+    left: 50%; transform: translateX(-50%);
+    width: 80vw; height: 2vh;
+    background-color: rgba(255,0,0,0.2);
+    display: flex;
+}
 @media(orientation: portrait){
     /* #adresaSoubory{
         width: 50vw; height: 5vw;
