@@ -1,0 +1,1 @@
+burya je dement

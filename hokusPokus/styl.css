@@ -76,7 +76,7 @@ input[type="radio"]{
     opacity: 0;
 }
 #souboryWS{
-    border: 2px solid gray;
+    /* border: 2px solid gray; */
     transform: translateY(-200.05%);
 }
 /*SOUBORY*/
@@ -138,7 +138,10 @@ input[type="radio"]{
     width: 2vh;
 }
 #dirOptions nav button{
-    height: 2vh;
+    height: 3vh;
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: rgba(0,0,0,0);
 }
 #dirOptions{
     position: absolute;
@@ -146,9 +149,20 @@ input[type="radio"]{
 #dirOptions{
     position: relative;
     left: 50%; transform: translateX(-50%);
-    width: 80vw; height: 2vh;
+    width: 80vw; height: 3vh;
     background-color: rgba(255,0,0,0.2);
     display: flex;
+}
+#dirOp2{
+    position: absolute;
+}
+#dirOp2{
+    position: absolute;
+    left: 100%; transform: translateX(-100%);
+    display: flex;
+}
+.sCHbtt{
+    width: 3.2vh;
 }
 @media(orientation: portrait){
     /* #adresaSoubory{
@@ -189,5 +203,13 @@ input[type="radio"]{
         position: relative;
         width: 20vw;
         transform: translate(-0.15vh, 100%);
+    }
+}
+@media(max-height:1200px){
+    #navigace{
+        font-size: 0.75em;
+    }
+    .cover{
+        transform: translate(-0.15vh, 65%);
     }
 }
