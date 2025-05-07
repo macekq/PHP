@@ -142,15 +142,24 @@ input[type="radio"]{
     border: 1px solid black;
     border-radius: 5px;
     background-color: rgba(0,0,0,0);
+    cursor: pointer;
+    transition: 0.1s;
+}
+#dirOptions nav button:hover{
+    transition: 0.25s;
+    background-color: black;
+    border-color: white;
+    color: white;
 }
 #dirOptions{
     position: absolute;
 }
 #dirOptions{
+    margin-top: 2.5vh;
     position: relative;
     left: 50%; transform: translateX(-50%);
     width: 80vw; height: 3vh;
-    background-color: rgba(255,0,0,0.2);
+    /* background-color: rgba(255,0,0,0.2); */
     display: flex;
 }
 #dirOp2{
@@ -202,7 +211,7 @@ input[type="radio"]{
         z-index: 999;
         position: relative;
         width: 20vw;
-        transform: translate(-0.15vh, 100%);
+        transform: translate(-0.15vh, 150%);
     }
 }
 @media(max-height:1200px){
@@ -210,6 +219,7 @@ input[type="radio"]{
         font-size: 0.75em;
     }
     .cover{
-        transform: translate(-0.15vh, 65%);
+        transform: translate(-0.15vh, 80%);
+        height: 1vh;
     }
 }
