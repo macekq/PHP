@@ -32,31 +32,7 @@
             <nav id="workspace">
                 <div class="WS" id="editorWS">
                     
-                    <nav id="editorInputCont">
-                        <form method="post">
-                            <nav id="editorOptions">
-                                <input type="button" value="save changes">
-                                <input type="button" value="discard changes">
-                            </nav>
-                            <div id="editorInput">
-                                <textarea name="textEditor" id="textEditor"></textarea>
-                            </div>
-                        </form>
-                    </nav>
-                    <nav id="editorOutputCont">
-                        <nav id="iframeOptions">
-                            <div>url - </div>
-                            <a href="http://127.0.0.1:5500/hokusPokus/0.html" id="editorLink"><nav id="cpLinkEditor">http://127.0.0.1:5500/hp/hokusPokus/0.html</nav></a>
-                            <div id="cpBttContEdit">
-                                <button type="button" id="cpDirEditor" onclick="ctrlC('cpLinkEditor')">
-                                    <img src="assets/copy.png">
-                                </button>
-                            </div>
-                        </nav>
-                        <div id="iframeCont">
-                            <iframe src="idk.html" frameborder="0"></iframe>
-                        </div>
-                    </nav>
+                    
 
                 </div>
                 <div class="WS" id="cteckaWS">

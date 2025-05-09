@@ -12,6 +12,8 @@
     else echo "<script>console.log('databaze pripojena')</script>";
 
     // mysqli_query($connection, 'ALTER TABLE projektZWA MODIFY COLUMN id INT NOT NULL AUTO_INCREMENT')
+    // $sql = "ALTER TABLE projektZWA MODIFY COLUMN id INT AUTO_INCREMENT;";
+    // mysqli_query($connection, $sql);
 ?>
 <!DOCTYPE html>
 <html lang="en">

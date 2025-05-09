@@ -18,7 +18,7 @@
     #in{
         top: 0; left: 0;
         position: absolute;
-        width: 100vw; height: 50vh;
+        width: 50vw; height: 50vh;
         background-color: rgb(50,50,50);
         padding: 16px;
         color: white;
