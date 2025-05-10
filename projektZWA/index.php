@@ -2,19 +2,148 @@
     require "login-register.php";
     
 ?>
-    <style>
-        #mainCont{
-            position: absolute;
-            top: 0; left: 0;
-            width: 100vw; height: 100vh;
-            background-color: black;
+
+    <div id="idk">
+        <main id="mainCont">
+            <nav id="navigace">
+                <nav id="optionsMenu">
+                    <div class="OMconts" id="editorBtt"> 
+                        <input type="radio" name="options" id="editorR">
+                        <div class="OMnazvy">EDITOR </div>
+                        <div class="cover" id="editorC"></div>
+                    </div>
+                    <div class="OMconts" id="cteckaBtt">
+                        <input type="radio" name="options" id="cteckaR">
+                        <div class="OMnazvy">ČTEČKA</div>
+                        <div class="cover" id="cteckaC"></div>
+                    </div>
+                    <div class="OMconts" id="souboryBtt">
+                        <input type="radio" name="options" id="souboryR">
+                        <div class="OMnazvy">SOUBORY</div>
+                        <div class="cover" id="souboryC"></div>
+                    </div>
+                </nav>
+            </nav>
+            <nav id="workspace">
+                <div class="WS" id="editorWS">
+                    <div style="font-size: 2em; font-weight: bold;">8 duvodu proc nemam rad cerne</div>
+                    <pre>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                        Quae debitis libero deserunt voluptas accusantium, ex quam quos provident,
+                        corporis numquam exercitationem laudantium dolorem beatae.
+                        Quibusdam reprehenderit obcaecati placeat minus nulla?
+                    </pre>
+                </div>
+                <div class="WS" id="cteckaWS">
+                    <div style="font-size: 2em; font-weight: bold;">jak zkopnout dedu z kopce</div>
+                    <pre>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                        Quae debitis libero deserunt voluptas accusantium, ex quam quos provident,
+                        corporis numquam exercitationem laudantium dolorem beatae.
+                        Quibusdam reprehenderit obcaecati placeat minus nulla?
+                    </pre>
+                </div>
+                <div class="WS" id="souboryWS">
+                    
+                    <div id="adresaSoubory">
+                        <div>url - </div>
+                        <a href="http://127.0.0.1:5500/hokusPokus/0.html" id="souboryLink"><nav id="cpLink">http://127.0.0.1:5500/hokusPokus/0.html</nav></a>
+                        <div id="cpBttCont">
+                            <button type="button" name="cpDir" id="cpDir" value="copy" onclick="ctrlC('cpLink')">
+                                <img src="assets/copy.png">
+                            </button>
+                        </div>
+                    </div>
+                    <div id="dirOptions">
+                        <nav>
+                            <button class="sCHbtt">
+                                <!-- <img src="assets/arrow.png" style="transform: rotate(180deg); height: 1.1vh;"> -->
+                                <-
+                            </button>
+                            <button class="sCHbtt" id="addFileBtt">+</button>
+                        </nav>
+                        <nav id="dirOp2">
+                            <button class="sCHbtt" id="removeFileBtt">-</button>
+                            <button>editor</button>
+                            <button>ctecka</button>
+                        </nav>
+                    </div>
+                    <div id="obsahDir">
+                        <ul id="obsahDirList">
+                            <li class="soubor">
+                                <nav>skap.php</nav>
+                                <img src="assets/file.png">
+                            </li>
+                            <li class="slozka">
+                                <nav>assets</nav>
+                                <img src="assets/arrow.png">
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </main>
+    </div>
+
+    <div id="hiddenFormCont">
+        <form method="post" id="newFileNameForm">
+            <input type="text" id="newFileName" name="newFileName">
+        </form>
+    </div>
+    <?php
+        $currDir = ""; $selectedFile = "";
+
+        if(isset($_POST["newFileName"])){
+            echo "<script>console.log('funguje')</script>";
         }
-    </style>
-    <main id="mainCont">
+    ?>
+    <script>
+        var USER = {
+            name: '', currDir: '', selectedFile: ''
+        }
 
+        const addFileBtt = document.getElementById('addFileBtt')
+        addFileBtt.addEventListener('click', () => {
+            document.getElementById('newFileName').value = window.prompt("vloz nazev noveho souboru");
+            document.getElementById('newFileNameForm').submit()
+        })
+
+        function ctrlC(id){
+            const link = document.getElementById(id).innerText
+
+            navigator.clipboard.writeText(link)
+        }   
+        const editor = document.getElementById('editorBtt'), ctecka = document.getElementById('cteckaBtt'), soubory = document.getElementById('souboryBtt')
+        const editorR = document.getElementById('editorR'), cteckaR = document.getElementById('cteckaR'), souboryR = document.getElementById('souboryR')
+        const editorWS = document.getElementById('editorWS'), cteckaWS = document.getElementById('cteckaWS'), souboryWS = document.getElementById('souboryWS')
+        const editorC = document.getElementById('editorC'), cteckaC = document.getElementById('cteckaC'), souboryC = document.getElementById('souboryC')
+
+        const bgArr = [editor, ctecka, soubory], bttArr = [editorR, cteckaR, souboryR]
+        const wsArr = [editorWS, cteckaWS, souboryWS], cArr = [editorC, cteckaC, souboryC]
         
+        for(let i = 0; i<bgArr.length; i++){
 
-    </main>
+            bttArr[i].addEventListener('change', () => {
+
+                if(bttArr[i].checked){
+
+                    bgArr[i].style.backgroundColor = "white"
+                    cArr[i].style.opacity = "1"
+                    wsArr[i].style.zIndex = "999"
+                    wsArr[i].style.opacity = "1"
+
+                    for(let j = 0; j<bgArr.length; j++){
+                        if(j!=i){
+                            bgArr[j].style.backgroundColor = 'rgb(150,150,150)'
+                            cArr[j].style.opacity = "0"
+                            wsArr[j].style.zIndex = "0"
+                            wsArr[j].style.opacity = "0"
+                        }
+                    }
+                }
+            });
+        }
+    </script>
 
 </body>
 </html>

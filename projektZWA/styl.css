@@ -3,10 +3,6 @@
 
 body{
     font-family: "Cal Sans", sans-serif;
-    background-color: red;
-}
-input{
-    font-family: "Cal Sans", sans-serif;
 }
 input[type="radio"]{
     position: absolute;
@@ -72,21 +68,17 @@ input[type="radio"]{
     height: 100%;
 }
 #editorWS{
-    /* background-color: red; */
-    /* opacity: 0; */
-    z-index: 999;
+    background-color: red;
+    opacity: 0;
 }
 #cteckaWS{
     background-color: blue;
     transform: translateY(-100%);
     opacity: 0;
-    z-index: 0;
 }
 #souboryWS{
     /* border: 2px solid gray; */
     transform: translateY(-200.05%);
-    opacity: 0;
-    z-index: 0;
 }
 /*SOUBORY*/
 #adresaSoubory{
@@ -148,7 +140,6 @@ input[type="radio"]{
     display: flex;
 }
 #dirOptions nav button{
-    font-family: "Cal Sans", sans-serif;
     height: 3vh;
     margin-right: 0.5vh;
     border: 1px solid black;
@@ -156,7 +147,6 @@ input[type="radio"]{
     background-color: rgba(0,0,0,0);
     cursor: pointer;
     transition: 0.1s;
-    margin-left: 1vh;
 }
 #dirOptions nav button:hover{
     transition: 0.25s;

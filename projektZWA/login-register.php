@@ -21,6 +21,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="uvod.css">
+    <link rel="stylesheet" href="styl.css">
     <title>Document</title>
 </head>
 <body>
@@ -98,6 +99,9 @@
     <script>
         const hideForms = () => {
             document.getElementById('login-register').style.opacity = '0'
+            document.getElementById('login-register').style.zIndex = 0
+
+            document.getElementById('idk').style.zIndex = 999
         }
     </script>
 <?php
@@ -120,7 +124,7 @@
             while($row = mysqli_fetch_assoc($result)){
     
                 // echo "<script>console.log('" . $row['jmeno'] ."','". $row['heslo'] . "','". $row['email'] . "','". $row['datum'] . "')</script>";
-                // $USERNAME = $row["jmeno"];
+                $USERNAME = $row["jmeno"];
 
                 echo "<script>hideForms()</script>";
 
