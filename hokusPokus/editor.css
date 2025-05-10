@@ -73,4 +73,5 @@
     border: 0px;
     resize: none;
     padding: 2%;
+    box-shadow: 0 0 5px black;
 }

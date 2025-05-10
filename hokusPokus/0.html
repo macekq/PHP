@@ -35,8 +35,8 @@
                     <nav id="editorInputCont">
                         <form method="post">
                             <nav id="editorOptions">
-                                <input type="button" value="save changes">
-                                <input type="button" value="discard changes">
+                                <input type="submit" name="editorSubmitBtt" value="save changes">
+                                <input type="submit" name="editorSubmitBtt" value="discard changes">
                             </nav>
                             <div id="editorInput">
                                 <textarea name="textEditor" id="textEditor"></textarea>
@@ -111,6 +111,26 @@
     </div>
 
     <script>
+        var USER = {
+            selected: '', username: '', ctecka: '', editor: '',
+            dirContents: [], dirListIds: [0]
+        }
+
+        function addDirContent(name){
+            const dirList = document.getElementById('obsahDirList')
+            
+            let li = document.createElement('li')
+            let nav = document.createElement('nav')
+            let img = document.createElement('img')
+            
+            if(USER.dirListIds.length > 1){
+                
+                USER.dirListIds[USER.dirListIds.length] = USER.dirListIds[USER.dirListIds.length-1] + 1 
+            }
+            li.id = USER.dirListIds[USER.dirListIds.length-1]
+            
+        }
+
         function ctrlC(id){
             const link = document.getElementById(id).innerText
 
