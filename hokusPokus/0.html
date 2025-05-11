@@ -46,7 +46,7 @@
                     <nav id="editorOutputCont">
                         <nav id="iframeOptions">
                             <div>url - </div>
-                            <a href="http://127.0.0.1:5500/hokusPokus/0.html" id="editorLink"><nav id="cpLinkEditor">http://127.0.0.1:5500/hp/hokusPokus/0.html</nav></a>
+                            <a href="http://127.0.0.1:5500/hokusPokus/0.html" target="_blank" id="editorLink"><nav id="cpLinkEditor">http://127.0.0.1:5500/hp/hokusPokus/0.html</nav></a>
                             <div id="cpBttContEdit">
                                 <button type="button" id="cpDirEditor" onclick="ctrlC('cpLinkEditor')">
                                     <img src="assets/copy.png">
@@ -72,7 +72,7 @@
                     
                     <div id="adresaSoubory">
                         <div>url - </div>
-                        <a href="http://127.0.0.1:5500/hokusPokus/0.html" id="souboryLink"><nav id="cpLink">http://127.0.0.1:5500/hokusPokus/0.html</nav></a>
+                        <a href="http://127.0.0.1:5500/hokusPokus/0.html" target="_blank" id="souboryLink"><nav id="cpLink">http://127.0.0.1:5500/hokusPokus/0.html</nav></a>
                         <div id="cpBttCont">
                             <button type="button" name="cpDir" id="cpDir" value="copy" onclick="ctrlC('cpLink')">
                                 <img src="assets/copy.png">
@@ -118,7 +118,8 @@
 
         function addDirContent(name){
             const dirList = document.getElementById('obsahDirList')
-            
+            let dotIndex
+
             let li = document.createElement('li')
             let nav = document.createElement('nav')
             let img = document.createElement('img')
@@ -128,6 +129,7 @@
                 USER.dirListIds[USER.dirListIds.length] = USER.dirListIds[USER.dirListIds.length-1] + 1 
             }
             li.id = USER.dirListIds[USER.dirListIds.length-1]
+
             
         }
 
