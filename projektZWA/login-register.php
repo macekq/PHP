@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="uvod.css">
-    <link rel="stylesheet" href="styl.css">
+    <link rel="stylesheet" href="pls.css">
     <link rel="stylesheet" href="editor-ctecka.css">
     <title>Document</title>
 </head>

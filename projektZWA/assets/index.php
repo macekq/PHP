@@ -48,8 +48,8 @@
                     <nav id="editorInputCont">
                         <form method="post" id="editorForm">
                             <nav id="editorOptions">
-                                <input type="submit" name="editorSubmitBtt" value="saveChanges">
-                                <input type="submit" name="editorSubmitBtt" value="discardChanges">
+                                <input type="submit" name="editorSubmitBtt" value="save changes">
+                                <input type="submit" name="editorSubmitBtt" value="discard changes">
                             </nav>
                             <nav id="editorInput">
                                 <textarea name="textEditor" id="textEditor"></textarea>
@@ -91,25 +91,21 @@
                         </div>
                     </div>
                     <div id="dirOptions">
-                        <nav style="display: flex;">
-                            <button class="sCHbtt" onclick="cd00()">
+                        <nav>
+                            <button class="sCHbtt">
                                 <img src="assets/arrow.png" style="transform: rotate(180deg) translateY(-8%);">
                             </button>
-                            <form method="post" id="addFF">                                    
-                                <input type="hidden" name="nazevFF" id="nazevFF">
-
-                                <button name="addFFBtt" class="sCHbtt" onclick="submitForm('folder')">
-                                    <img src="assets/addFolder.png">
-                                </button>
-                                <button name="addFFBtt" class="sCHbtt" onclick="submitForm('file')">
-                                    <img src="assets/addFile.png">
-                                </button>
-                            </form>
+                            <button class="sCHbtt">
+                                <img src="assets/addFolder.png">
+                            </button>
+                            <button class="sCHbtt" id="addFileBtt">
+                                <img src="assets/addFile.png">
+                            </button>
                         </nav>
                         <nav id="dirOp2">
                             <button class="sCHbtt" id="removeFileBtt">-</button>
-                            <button class="sCHbtt">editor</button>
-                            <button class="sCHbtt">ctecka</button>
+                            <button>editor</button>
+                            <button>ctecka</button>
                         </nav>
                     </div>
                     <div id="obsahDir">
@@ -135,16 +131,6 @@
             files: [], filesAsocDir: [], currDir: '', ids: []
         }
         console.log(USER.dirContents)
-
-        function submitForm(action) {
-            if(action == "folder"){
-                document.getElementById("nazevFF").value = window.prompt("nazev slozky:");
-            }else{
-                document.getElementById("nazevFF").value = window.prompt("nazev souboru i s typem souboru:\n(all files)")
-            }
-
-            document.getElementById("addFF").submit();
-        }
 
         function addFromDir(name, dirName){
             USER.files.push(name)
@@ -246,23 +232,8 @@
                 }
             });
         }
-
-        // document.getElementById("addFF").addEventListener("submit", async (e) => {
-        //     e.preventDefault(); // Prevent page refresh
-            
-        //     // Send form data to the SAME file (index.php)
-        //     const response = await fetch("index.php", {
-        //         method: "POST",
-        //         body: new FormData(e.target),
-        //     });
-            
-        //     // Display PHP's response
-        //     const result = await response.text();
-        //     document.getElementById("response").innerHTML = result;
-        // });
     </script>
     <?php
-    
     function searchDir($dir){
         $files = scandir($dir);
 
@@ -278,73 +249,6 @@
             }
         }
     }
-    function bypassLogin($name, $passwd){
-        $sql = "SELECT * FROM projektZWA WHERE jmeno = '{$name}' AND heslo = '$passwd'";
-        $result = mysqli_query($connection, $sql);
-    
-        if(mysqli_num_rows($result) > 0){
-
-            while($row = mysqli_fetch_assoc($result)){
-    
-                // echo "<script>console.log('" . $row['jmeno'] ."','". $row['heslo'] . "','". $row['email'] . "','". $row['datum'] . "')</script>";
-                $USERNAME = $row["jmeno"];
-                echo "<script>document.getElementById('username').innerText = '{$USERNAME}'</script>";
-                echo "<script>document.getElementById('souboryLink').innerText = 'localhost/php/projektZWA/data/{$USERNAME}'</script>";
-                echo "<script>USER.name='{$USERNAME}'</script>";
-
-                $dir = "data/{$USERNAME}";
-                searchDir($dir);
-
-                echo "<script>showDirContent('{$dir}')</script>";
-
-                echo "<script>hideForms()</script>";
-
-                $sql = "SELECT jmeno FROM projektZWA WHERE jmeno = '{$name}'";
-                $result = mysqli_query($connection, $sql);
-
-                while($row = mysqli_fetch_assoc($result)){
-                    echo "<br>" . $row["jmeno"];
-                    $dir = "data/". $row["jmeno"];
-                    if(!file_exists($dir)){
-                        mkdir($dir);
-                    }
-                }
-            }
-        }else{
-            echo "<script>window.alert('jmeno neexistuje nebo se neshoduje heslo')</script>";
-        }
-    }
-    // //----------------------------------------------------------------------------
-    // session_start();
-
-    // // Handle login submission
-    // if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nameL'])) {
-    //     $username = $_POST['nameL'];
-    //     $password = $_POST['passwdL'];
-
-    //     // Validate credentials (e.g., against a database)
-    //     if ($username === "admin" && $password === "1234") { // Replace with real validation
-    //         $_SESSION['logged_in'] = true;
-    //         $_SESSION['username'] = $username;
-    //         header("Location: index.php"); // Redirect after login
-    //         exit;
-    //     } else {
-    //         $error = "Invalid credentials!";
-    //     }
-    // }
-
-    // // If already logged in, show the app
-    // if (isset($_SESSION['logged_in'])) {
-    //     include 'app.php'; // Your main application (AJAX interactions)
-    //     exit;
-    // }
-
-    // // if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // //     $name = $_POST['addFFBtt'] ?? '';
-    // //     echo "Hello, " . htmlspecialchars($name) . "! (Server response)";
-    // //     exit; // Stops PHP from rendering the rest of the page on AJAX calls
-    // // }
-
     if(isset($_POST["nameR"]) && isset($_POST["passR"]) && isset($_POST["mailR"]) && isset($_POST["statR"])){
 
         $name = $_POST["nameR"]; $passwd = $_POST["passR"]; $email = $_POST["mailR"]; $stat = $_POST["statR"];
