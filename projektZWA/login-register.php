@@ -1,20 +1,3 @@
-<?php
-
-    $dbServer = "localhost";
-    $dbUser = "root";
-    $dbPasswd = "";
-    $dbName = "skap";
-    $connection = "";
-
-    $connection = mysqli_connect($dbServer, $dbUser, $dbPasswd, $dbName); //connection bude objekt s moji databazi
-
-    if(!$connection) error_log("databazi nelze pripojit");
-    else echo "<script>console.log('databaze pripojena')</script>";
-
-    // mysqli_query($connection, 'ALTER TABLE projektZWA MODIFY COLUMN id INT NOT NULL AUTO_INCREMENT')
-    // $sql = "ALTER TABLE projektZWA MODIFY COLUMN id INT AUTO_INCREMENT;";
-    // mysqli_query($connection, $sql);
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="uvod.css">
     <link rel="stylesheet" href="styl.css">
+    <link rel="stylesheet" href="editor-ctecka.css">
     <title>Document</title>
 </head>
 <body>
@@ -104,43 +88,3 @@
             document.getElementById('idk').style.zIndex = 999
         }
     </script>
-<?php
-    if(isset($_POST["nameR"]) && isset($_POST["passR"]) && isset($_POST["mailR"]) && isset($_POST["statR"])){
-
-        $name = $_POST["nameR"]; $passwd = $_POST["passR"]; $email = $_POST["mailR"]; $stat = $_POST["statR"];
-
-        $sql = "INSERT INTO projektZWA (jmeno, heslo, email, stat, datum) VALUES ('$name', '$passwd', '$email', '$stat', CURDATE())";
-        mysqli_query($connection, $sql);
-        
-    }
-    if(isset($_POST["nameL"]) && isset($_POST["passL"])){
-        $name = $_POST["nameL"]; $passwd = $_POST["passL"];
-        
-        $sql = "SELECT * FROM projektZWA WHERE jmeno = '{$name}' AND heslo = '$passwd'";
-        $result = mysqli_query($connection, $sql);
-    
-        if(mysqli_num_rows($result) > 0){
-
-            while($row = mysqli_fetch_assoc($result)){
-    
-                // echo "<script>console.log('" . $row['jmeno'] ."','". $row['heslo'] . "','". $row['email'] . "','". $row['datum'] . "')</script>";
-                $USERNAME = $row["jmeno"];
-
-                echo "<script>hideForms()</script>";
-
-                $sql = "SELECT jmeno FROM projektZWA WHERE jmeno = '{$name}'";
-                $result = mysqli_query($connection, $sql);
-
-                while($row = mysqli_fetch_assoc($result)){
-                    echo "<br>" . $row["jmeno"];
-                    $dir = "data/". $row["jmeno"];
-                    if(!file_exists($dir)){
-                        mkdir($dir);
-                    }
-                }
-            }
-        }else{
-            echo "<script>window.alert('jmeno neexistuje nebo se neshoduje heslo')</script>";
-        }
-    }
-?>

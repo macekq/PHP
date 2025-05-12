@@ -1,9 +1,23 @@
 <?php
     require "login-register.php";
-    
+
+    $dbServer = "localhost";
+    $dbUser = "root";
+    $dbPasswd = "";
+    $dbName = "skap";
+    $connection = "";
+
+    $connection = mysqli_connect($dbServer, $dbUser, $dbPasswd, $dbName); //connection bude objekt s moji databazi
+
+    if(!$connection) error_log("databazi nelze pripojit");
+    else echo "<script>console.log('databaze pripojena')</script>";
+
+    // mysqli_query($connection, 'ALTER TABLE projektZWA MODIFY COLUMN id INT NOT NULL AUTO_INCREMENT')
+    // $sql = "ALTER TABLE projektZWA MODIFY COLUMN id INT AUTO_INCREMENT;";
+    // mysqli_query($connection, $sql);
 ?>
 
-    <div id="idk">
+<div id="idk">
         <main id="mainCont">
             <nav id="navigace">
                 <nav id="optionsMenu">
@@ -22,32 +36,54 @@
                         <div class="OMnazvy">SOUBORY</div>
                         <div class="cover" id="souboryC"></div>
                     </div>
+                    <div id="userInfo">
+                        <div id="username">bombardinoCrocodilo</div>
+                        <img src="assets/user.png">
+                    </div>
                 </nav>
             </nav>
             <nav id="workspace">
                 <div class="WS" id="editorWS">
-                    <div style="font-size: 2em; font-weight: bold;">8 duvodu proc nemam rad cerne</div>
-                    <pre>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Quae debitis libero deserunt voluptas accusantium, ex quam quos provident,
-                        corporis numquam exercitationem laudantium dolorem beatae.
-                        Quibusdam reprehenderit obcaecati placeat minus nulla?
-                    </pre>
+                    
+                    <nav id="editorInputCont">
+                        <form method="post" id="editorForm">
+                            <nav id="editorOptions">
+                                <input type="submit" name="editorSubmitBtt" value="save changes">
+                                <input type="submit" name="editorSubmitBtt" value="discard changes">
+                            </nav>
+                            <nav id="editorInput">
+                                <textarea name="textEditor" id="textEditor"></textarea>
+                            </nav>
+                        </form>
+                    </nav>
+                    <nav id="editorOutputCont">
+                        <nav id="iframeOptions">
+                            <div>url - </div>
+                            <a href="http://127.0.0.1:5500/hokusPokus/0.html" target="_blank" id="editorLink"><nav id="cpLinkEditor">http://127.0.0.1:5500/hp/hokusPokus/0.html</nav></a>
+                            <div id="cpBttContEdit">
+                                <button type="button" id="cpDirEditor" onclick="ctrlC('cpLinkEditor')">
+                                    <img src="assets/copy.png">
+                                </button>
+                            </div>
+                        </nav>
+                        <div id="iframeCont">
+                            <iframe src="makeItTierList/index.html" frameborder="0"></iframe>
+                        </div>
+                    </nav>
+
                 </div>
                 <div class="WS" id="cteckaWS">
-                    <div style="font-size: 2em; font-weight: bold;">jak zkopnout dedu z kopce</div>
-                    <pre>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Quae debitis libero deserunt voluptas accusantium, ex quam quos provident,
-                        corporis numquam exercitationem laudantium dolorem beatae.
-                        Quibusdam reprehenderit obcaecati placeat minus nulla?
-                    </pre>
+                    
+                    <div id="cteckaCont">
+                        <p id="cteckaContentDisplay"></p>
+                    </div>
+
                 </div>
                 <div class="WS" id="souboryWS">
                     
                     <div id="adresaSoubory">
                         <div>url - </div>
-                        <a href="http://127.0.0.1:5500/hokusPokus/0.html" id="souboryLink"><nav id="cpLink">http://127.0.0.1:5500/hokusPokus/0.html</nav></a>
+                        <a href="http://127.0.0.1:5500/hokusPokus/0.html" target="_blank" id="souboryLink"><nav id="cpLink">http://127.0.0.1:5500/hokusPokus/0.html</nav></a>
                         <div id="cpBttCont">
                             <button type="button" name="cpDir" id="cpDir" value="copy" onclick="ctrlC('cpLink')">
                                 <img src="assets/copy.png">
@@ -70,14 +106,14 @@
                     </div>
                     <div id="obsahDir">
                         <ul id="obsahDirList">
-                            <li class="soubor">
+                            <!-- <li class="soubor">
                                 <nav>skap.php</nav>
-                                <img src="assets/file.png">
+                                <img class="dirIcon" src="assets/file.png">
                             </li>
                             <li class="slozka">
                                 <nav>assets</nav>
-                                <img src="assets/arrow.png">
-                            </li>
+                                <img class="dirIcon" src="assets/arrow.png">
+                            </li> -->
                         </ul>
                     </div>
                 </div>
@@ -85,28 +121,54 @@
         </main>
     </div>
 
-    <div id="hiddenFormCont">
-        <form method="post" id="newFileNameForm">
-            <input type="text" id="newFileName" name="newFileName">
-        </form>
-    </div>
-    <?php
-        $currDir = ""; $selectedFile = "";
-
-        if(isset($_POST["newFileName"])){
-            echo "<script>console.log('funguje')</script>";
-        }
-    ?>
     <script>
         var USER = {
-            name: '', currDir: '', selectedFile: ''
+            selected: '', name: '', ctecka: '', editor: '',
+            files: [], filesAsocDir: [], currDir: [], ids: []
+        }
+        console.log(USER.dirContents)
+
+        function addFromDir(name, dirName){
+            USER.files.push(name)
+            USER.filesAsocDir.push(dirName)
+            console.log(USER)
         }
 
-        const addFileBtt = document.getElementById('addFileBtt')
-        addFileBtt.addEventListener('click', () => {
-            document.getElementById('newFileName').value = window.prompt("vloz nazev noveho souboru");
-            document.getElementById('newFileNameForm').submit()
-        })
+        function showDirContent(dir){
+            const dirList = document.getElementById('obsahDirList')
+            dirList.innerHTML = ''
+
+            //nepouzitelny cod
+
+            for(let i = 0; i<USER.files.length; i++){
+                if(USER.filesAsocDir[i] == dir){
+
+                    let name = USER.files[i]
+
+                    let li = document.createElement('li')
+                    let nav = document.createElement('nav')
+                    let img = document.createElement('img')
+                    
+                    nav.innerText = name
+                    img.src = name.includes('.') ? 'assets/file.png' : 'assets/arrow.png';
+                    img.classList.add('dirIcon')
+                    
+                    let id
+                        
+                    do{
+                        id = Math.floor(Math.random()*1000)
+                    }while(USER.ids.includes(id))
+                    
+                    li.id = `file-${id}`
+                    USER.ids.push(li.id)
+                    
+                    li.append(nav, img)
+
+                    dirList.appendChild(li)
+                    console.log(USER)
+                }
+            }
+        }
 
         function ctrlC(id){
             const link = document.getElementById(id).innerText
@@ -121,6 +183,9 @@
         const bgArr = [editor, ctecka, soubory], bttArr = [editorR, cteckaR, souboryR]
         const wsArr = [editorWS, cteckaWS, souboryWS], cArr = [editorC, cteckaC, souboryC]
         
+        souboryC.style.opacity = "1"
+        for(let j = 0; j<bgArr.length; j++) if(j!=2) bgArr[j].style.backgroundColor = 'rgb(150,150,150)'
+
         for(let i = 0; i<bgArr.length; i++){
 
             bttArr[i].addEventListener('change', () => {
@@ -144,6 +209,68 @@
             });
         }
     </script>
+    <?php
+    function searchDir($dir){
+        $files = scandir($dir);
 
+        foreach ($files as $file) {
+            if ($file != '.' && $file != '..') {
+                if(str_contains($file, ".")){
+
+                    echo "<script>addFromDir('{$file}','{$dir}')</script>";
+                }else{
+                    echo "<script>addFromDir('{$file}','{$dir}')</script>";
+                    searchDir("{$dir}/{$file}");
+                }
+            }
+        }
+    }
+    if(isset($_POST["nameR"]) && isset($_POST["passR"]) && isset($_POST["mailR"]) && isset($_POST["statR"])){
+
+        $name = $_POST["nameR"]; $passwd = $_POST["passR"]; $email = $_POST["mailR"]; $stat = $_POST["statR"];
+
+        $sql = "INSERT INTO projektZWA (jmeno, heslo, email, stat, datum) VALUES ('$name', '$passwd', '$email', '$stat', CURDATE())";
+        mysqli_query($connection, $sql);
+        
+    }
+    if(isset($_POST["nameL"]) && isset($_POST["passL"])){
+        $name = $_POST["nameL"]; $passwd = $_POST["passL"];
+        
+        $sql = "SELECT * FROM projektZWA WHERE jmeno = '{$name}' AND heslo = '$passwd'";
+        $result = mysqli_query($connection, $sql);
+    
+        if(mysqli_num_rows($result) > 0){
+
+            while($row = mysqli_fetch_assoc($result)){
+    
+                // echo "<script>console.log('" . $row['jmeno'] ."','". $row['heslo'] . "','". $row['email'] . "','". $row['datum'] . "')</script>";
+                $USERNAME = $row["jmeno"];
+                echo "<script>document.getElementById('username').innerText = '{$USERNAME}'</script>";
+                echo "<script>document.getElementById('souboryLink').innerText = 'localhost/php/projektZWA/data/{$USERNAME}'</script>";
+                echo "<script>USER.name='{$USERNAME}'</script>";
+
+                $dir = "data/{$USERNAME}";
+                searchDir($dir);
+
+                echo "<script>showDirContent('{$dir}')</script>";
+
+                echo "<script>hideForms()</script>";
+
+                $sql = "SELECT jmeno FROM projektZWA WHERE jmeno = '{$name}'";
+                $result = mysqli_query($connection, $sql);
+
+                while($row = mysqli_fetch_assoc($result)){
+                    echo "<br>" . $row["jmeno"];
+                    $dir = "data/". $row["jmeno"];
+                    if(!file_exists($dir)){
+                        mkdir($dir);
+                    }
+                }
+            }
+        }else{
+            echo "<script>window.alert('jmeno neexistuje nebo se neshoduje heslo')</script>";
+        }
+    }
+?>
 </body>
 </html>

@@ -59,6 +59,21 @@ input[type="radio"]{
     border-radius: 5px;
     padding: 0.3vh;
 }
+#userInfo img{
+    height: 2vh;
+    border: 2px solid black;
+    border-radius: 100%;
+}
+#username{
+    line-height: 2.3vh;
+    margin-right: 1vh;
+}
+#userInfo{
+    display: flex;
+    justify-content: center;
+    /* background-color: rgba(255,0,0,0.2); */
+    width: 100%;
+}
 #idk{
     position: absolute;
     top: 0; left: 0;
@@ -77,7 +92,6 @@ input[type="radio"]{
     z-index: 999;
 }
 #cteckaWS{
-    background-color: blue;
     transform: translateY(-100%);
     opacity: 0;
     z-index: 0;
@@ -141,8 +155,19 @@ input[type="radio"]{
     width: 100%;
     /* background-color: rgba(255,0,0,0.2); */
 }
+#obsahDirList li:hover{
+    color: black;
+    background-color: white;
+
+    filter: invert(1);
+
+    transition: 0.25s;
+}
 #obsahDirList li{
-    height: 2vh;
+    padding-left: 1%;
+    cursor: pointer;
+    transition: 0.1s;
+    height: 2vh; line-height: 2vh;
     /* background-color: rgba(0,0,255,0.2); */
     border-bottom: 2px solid black;
     display: flex;
@@ -150,13 +175,12 @@ input[type="radio"]{
 #dirOptions nav button{
     font-family: "Cal Sans", sans-serif;
     height: 3vh;
-    margin-right: 0.5vh;
     border: 1px solid black;
     border-radius: 5px;
     background-color: rgba(0,0,0,0);
     cursor: pointer;
     transition: 0.1s;
-    margin-left: 1vh;
+    margin-left: 0.5vh;
 }
 #dirOptions nav button:hover{
     transition: 0.25s;
