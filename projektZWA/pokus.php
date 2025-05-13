@@ -1,37 +1,36 @@
 <?php
-    function deleteSavedDir(){
-        echo "<script>USER.files=[]</script>";
-        echo "<script>USER.filesAsocDir=[]</script>";
-    }
-    function searchDir($dir){
-        $files = scandir($dir);
+function getDirectoryContents($dir) {
+    $result = ['files' => [], 'dirs' => []];
+    $files = scandir($dir);
 
-        foreach ($files as $file) {
-            if ($file != '.' && $file != '..') {
-                if(str_contains($file, ".")){
-
-                    echo "<script>addFromDir('{$file}','{$dir}')</script>";
-                }else{
-                    echo "<script>addFromDir('{$file}','{$dir}')</script>";
-                    searchDir("{$dir}/{$file}");
-                }
+    foreach ($files as $file) {
+        if ($file != '.' && $file != '..') {
+            $path = $dir . '/' . $file;
+            if (is_dir($path)) {
+                $result['dirs'][$file] = getDirectoryContents($path);
+            } else {
+                $result['files'][] = $file;
             }
         }
     }
+    return $result;
+}
 
-    if(isset($_GET["nazev"]) && isset($_GET["SS"])){
-        $slozka_soubor = $_GET["SS"];
-        $nazev = $_GET["nazev"];
-        $dir = $_GET["path"];
-        $mainDir = $_GET["mainDir"];
+if (isset($_GET["nazev"]) && isset($_GET["SS"])) {
+    $slozka_soubor = $_GET["SS"];
+    $nazev = $_GET["nazev"];
+    $dir = $_GET["path"];
+    $mainDir = $_GET["mainDir"];
 
-        if($slozka_soubor){
-            mkdir("{$dir}/{$nazev}");
-        }else{
-            $file = fopen("{$dir}/{$nazev}", "w");
-        }
-        deleteSavedDir();
-        searchDir($mainDir);
-        echo "<script>console.log(USER)</script>";
+    if ($slozka_soubor) {
+        mkdir("{$dir}/{$nazev}");
+    } else {
+        file_put_contents("{$dir}/{$nazev}", 'mama te nechtela');
     }
+    
+    // Return the updated directory structure
+    header('Content-Type: application/json');
+    echo json_encode(getDirectoryContents($mainDir));
+    exit;
+}
 ?>

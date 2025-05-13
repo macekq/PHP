@@ -134,28 +134,88 @@
             selected: '', name: '', ctecka: '', editor: '',
             files: [], filesAsocDir: [], currDir: '', ids: []
         }
-        console.log(USER.dirContents)
+
+        async function submitForm(action) {
+            let nazev, isFolder;
+            if (action == "folder") {
+                nazev = window.prompt("nazev slozky:");
+                isFolder = true;
+            } else {
+                nazev = window.prompt("nazev souboru i s typem souboru:\n(all files)");
+                isFolder = false;
+            }
+            
+            if (!nazev) return; // User canceled the prompt
+            
+            try {
+                const response = await fetch(`pokus.php?nazev=${encodeURIComponent(nazev)}&SS=${isFolder}&path=${encodeURIComponent(USER.currDir)}&mainDir=data/${encodeURIComponent(USER.name)}`);
+                const data = await response.json();
+                
+                // Process the returned data and update USER object
+                updateUserWithDirectoryData(data);
+                
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        function updateUserWithDirectoryData(data, currentPath = '') {
+            // Clear existing data
+            USER.files = [];
+            USER.filesAsocDir = [];
+            
+            // Recursive function to process directory structure
+            function processDirectory(dirData, path) {
+                // Add files
+                dirData.files.forEach(file => {
+                    USER.files.push(file);
+                    USER.filesAsocDir.push(path ? `${path}/${file}` : file);
+                });
+                
+                // Process subdirectories
+                Object.entries(dirData.dirs).forEach(([dirName, dirContents]) => {
+                    const newPath = path ? `${path}/${dirName}` : dirName;
+                    // Add the directory itself
+                    USER.files.push(dirName);
+                    USER.filesAsocDir.push(newPath);
+                    // Process its contents
+                    processDirectory(dirContents, newPath);
+                });
+            }
+            
+            processDirectory(data, '');
+            console.log('Updated USER:', USER);
+            showDirContent(`data/${USER.name}`)
+        }
+        /*
+        var USER = {
+            selected: '', name: '', ctecka: '', editor: '',
+            files: [], filesAsocDir: [], currDir: '', ids: []
+        }
 
         async function submitForm(action) {
             let response;
             if(action == "folder"){
-                let nazevSlozky = window.prompt("nazev slozky:");
+                let nazevSlozky
+                do{
+                    nazevSlozky = window.prompt(`nazev slozky:\n(bez ".")`);
+                }while(nazevSlozky.includes("."))
 
-                response = await fetch(`pokus.php?nazev=${nazevSlozky}&SS=true&path=${USER.currDir}&mainDir=data/${USER.name}`, {
+                response = await fetch(`pokus.php?nazev=${nazevSlozky}&SS=pravda&path=${USER.currDir}&mainDir=data/${USER.name}`, {
                 method: "GET",
                 // body: new FormData(e.target),
             });
             }else{
                 let nazevSouboru = window.prompt("nazev souboru i s typem souboru:\n(all files)")
                 
-                response = await fetch(`pokus.php?nazev=${nazevSouboru}&SS=flase`, {
+                response = await fetch(`pokus.php?nazev=${nazevSouboru}&SS=lez&path=${USER.currDir}&mainDir=data/${USER.name}`, {
                 method: "GET",
                 // body: new FormData(e.target),
             });
             }
             
         }
-
+        */
         function addFromDir(name, dirName){
             USER.files.push(name)
             USER.filesAsocDir.push(dirName)
