@@ -12,7 +12,7 @@
     if(!$connection) error_log("databazi nelze pripojit");
     else echo "<script>console.log('databaze pripojena')</script>";
 
-    // mysqli_query($connection, 'ALTER TABLE projektZWA MODIFY COLUMN id INT NOT NULL AUTO_INCREMENT')
+    mysqli_query($connection, 'ALTER TABLE projektZWA MODIFY COLUMN id INT NOT NULL AUTO_INCREMENT')
     // $sql = "ALTER TABLE projektZWA MODIFY COLUMN id INT AUTO_INCREMENT;";
     // mysqli_query($connection, $sql);
 ?>
@@ -98,10 +98,10 @@
                             <form method="post" id="addFF">                                    
                                 <input type="hidden" name="nazevFF" id="nazevFF">
 
-                                <button name="addFFBtt" class="sCHbtt" onclick="submitForm('folder')">
+                                <button type="button" name="addFFBtt" class="sCHbtt" onclick="submitForm('folder')">
                                     <img src="assets/addFolder.png">
                                 </button>
-                                <button name="addFFBtt" class="sCHbtt" onclick="submitForm('file')">
+                                <button type="button" name="addFFBtt" class="sCHbtt" onclick="submitForm('file')">
                                     <img src="assets/addFile.png">
                                 </button>
                             </form>
@@ -136,14 +136,24 @@
         }
         console.log(USER.dirContents)
 
-        function submitForm(action) {
+        async function submitForm(action) {
+            let response;
             if(action == "folder"){
-                document.getElementById("nazevFF").value = window.prompt("nazev slozky:");
-            }else{
-                document.getElementById("nazevFF").value = window.prompt("nazev souboru i s typem souboru:\n(all files)")
-            }
+                let nazevSlozky = window.prompt("nazev slozky:");
 
-            document.getElementById("addFF").submit();
+                response = await fetch(`pokus.php?nazev=${nazevSlozky}&SS=true&path=${USER.currDir}&mainDir=data/${USER.name}`, {
+                method: "GET",
+                // body: new FormData(e.target),
+            });
+            }else{
+                let nazevSouboru = window.prompt("nazev souboru i s typem souboru:\n(all files)")
+                
+                response = await fetch(`pokus.php?nazev=${nazevSouboru}&SS=flase`, {
+                method: "GET",
+                // body: new FormData(e.target),
+            });
+            }
+            
         }
 
         function addFromDir(name, dirName){
@@ -246,23 +256,23 @@
                 }
             });
         }
-
-        // document.getElementById("addFF").addEventListener("submit", async (e) => {
-        //     e.preventDefault(); // Prevent page refresh
+//---------------------------------------------------------------------------
+        document.getElementById("addFF").addEventListener("submit", async (e) => {
+            e.preventDefault(); // Prevent page refresh
             
-        //     // Send form data to the SAME file (index.php)
-        //     const response = await fetch("index.php", {
-        //         method: "POST",
-        //         body: new FormData(e.target),
-        //     });
+            // Send form data to the SAME file (index.php)
+            const response = await fetch("pokus.php", {
+                method: "POST",
+                body: new FormData(e.target),
+            });
             
-        //     // Display PHP's response
-        //     const result = await response.text();
-        //     document.getElementById("response").innerHTML = result;
-        // });
+            // Display PHP's response
+            const result = await response.text();
+            document.getElementById("response").innerHTML = result;
+        });
+//---------------------------------------------------------------------------
     </script>
     <?php
-    
     function searchDir($dir){
         $files = scandir($dir);
 
@@ -276,42 +286,6 @@
                     searchDir("{$dir}/{$file}");
                 }
             }
-        }
-    }
-    function bypassLogin($name, $passwd){
-        $sql = "SELECT * FROM projektZWA WHERE jmeno = '{$name}' AND heslo = '$passwd'";
-        $result = mysqli_query($connection, $sql);
-    
-        if(mysqli_num_rows($result) > 0){
-
-            while($row = mysqli_fetch_assoc($result)){
-    
-                // echo "<script>console.log('" . $row['jmeno'] ."','". $row['heslo'] . "','". $row['email'] . "','". $row['datum'] . "')</script>";
-                $USERNAME = $row["jmeno"];
-                echo "<script>document.getElementById('username').innerText = '{$USERNAME}'</script>";
-                echo "<script>document.getElementById('souboryLink').innerText = 'localhost/php/projektZWA/data/{$USERNAME}'</script>";
-                echo "<script>USER.name='{$USERNAME}'</script>";
-
-                $dir = "data/{$USERNAME}";
-                searchDir($dir);
-
-                echo "<script>showDirContent('{$dir}')</script>";
-
-                echo "<script>hideForms()</script>";
-
-                $sql = "SELECT jmeno FROM projektZWA WHERE jmeno = '{$name}'";
-                $result = mysqli_query($connection, $sql);
-
-                while($row = mysqli_fetch_assoc($result)){
-                    echo "<br>" . $row["jmeno"];
-                    $dir = "data/". $row["jmeno"];
-                    if(!file_exists($dir)){
-                        mkdir($dir);
-                    }
-                }
-            }
-        }else{
-            echo "<script>window.alert('jmeno neexistuje nebo se neshoduje heslo')</script>";
         }
     }
     // //----------------------------------------------------------------------------

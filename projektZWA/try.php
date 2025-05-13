@@ -21,8 +21,10 @@
 </head>
 <body>
     
-    <form method="post">
-        <input type="text" name="">
+    <form method="get">
+        <input type="text" name="text">
+        <input type="text" name="tf">
+        <input type="submit">
     </form>
 
 </body>
