@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Cal+Sans&family=Roboto:wght@700&display=swap" rel="stylesheet');
-@import url('href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet');
+/* @import url('href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet'); */
 
 body{
     font-family: "Cal Sans", sans-serif;
@@ -8,16 +8,16 @@ body{
 input{
     font-family: "Cal Sans", sans-serif;
 }
-input[type="radio"]{
+.OMcontsRadio{
     position: absolute;
     width: 95%; height: 82%;
 }
-input[type="radio"]{
+.OMcontsRadio{
     position: relative;
     top: 50%; left: 50%;
-    transform: translate(-52%, -60%);
+    transform: translate(-52%, 100%);
     z-index: 999;
-    opacity: 0;
+    opacity: 1;
     cursor: pointer;
 }
 #optionsMenu{

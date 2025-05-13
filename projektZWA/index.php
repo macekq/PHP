@@ -22,17 +22,17 @@
             <nav id="navigace">
                 <nav id="optionsMenu">
                     <div class="OMconts" id="editorBtt"> 
-                        <input type="radio" name="options" id="editorR">
+                        <input type="radio" name="options" id="editorR" class="OMcontsRadio">
                         <div class="OMnazvy">EDITOR </div>
                         <div class="cover" id="editorC"></div>
                     </div>
                     <div class="OMconts" id="cteckaBtt">
-                        <input type="radio" name="options" id="cteckaR">
+                        <input type="radio" name="options" id="cteckaR" class="OMcontsRadio">
                         <div class="OMnazvy">ČTEČKA</div>
                         <div class="cover" id="cteckaC"></div>
                     </div>
                     <div class="OMconts" id="souboryBtt">
-                        <input type="radio" name="options" id="souboryR">
+                        <input type="radio" name="options" id="souboryR" class="OMcontsRadio">
                         <div class="OMnazvy">SOUBORY</div>
                         <div class="cover" id="souboryC"></div>
                     </div>
@@ -234,11 +234,24 @@
                 showDirContent(path.substring(0, index))
             }
         }
+        function selectFile(id, name){
+            document.getElementById(id).style.backgroundColor = "rgb(180,180,180)"
+            for(let i of USER.ids){
+                if(i!=id){
+                    document.getElementById(i).style.backgroundColor = "white"
+                }
+            }
+            document.getElementById('souboryLink').innerText = `localhost/php/projektZWA/${USER.currDir}/${name}`
+            document.getElementById('souboryLink').href = `${USER.currDir}/${name}`
+        }
         function showDirContent(dir){
             USER.currDir = dir
+            USER.ids = []
             const dirList = document.getElementById('obsahDirList')
             dirList.innerHTML = ''
 
+            document.getElementById('souboryLink').innerText = `localhost/php/projektZWA/${USER.currDir}`
+            document.getElementById('souboryLink').href = `${USER.currDir}`
 
             for(let i = 0; i<USER.files.length; i++){
                 if(USER.filesAsocDir[i] == dir){
@@ -252,6 +265,10 @@
                     nav.innerText = name
                     img.src = name.includes('.') ? 'assets/file.png' : 'assets/arrow.png';
                     img.classList.add('dirIcon')
+
+                    li.append(nav, img)
+                    dirList.appendChild(li)
+
                     if(name.includes('.')){
                         img.src = "assets/file.png"
                     }else{
@@ -269,11 +286,11 @@
                     
                     li.id = `file-${id}`
                     USER.ids.push(li.id)
-                    
-                    li.append(nav, img)
-
-                    dirList.appendChild(li)
                     console.log(USER)
+
+                    li.addEventListener('click', () => {
+                        selectFile(li.id, name)
+                    })
                 }
             }
         }
@@ -317,19 +334,19 @@
             });
         }
 //---------------------------------------------------------------------------
-        document.getElementById("addFF").addEventListener("submit", async (e) => {
-            e.preventDefault(); // Prevent page refresh
+        // document.getElementById("addFF").addEventListener("submit", async (e) => {
+        //     e.preventDefault(); // Prevent page refresh
             
-            // Send form data to the SAME file (index.php)
-            const response = await fetch("pokus.php", {
-                method: "POST",
-                body: new FormData(e.target),
-            });
+        //     // Send form data to the SAME file (index.php)
+        //     const response = await fetch("pokus.php", {
+        //         method: "POST",
+        //         body: new FormData(e.target),
+        //     });
             
-            // Display PHP's response
-            const result = await response.text();
-            document.getElementById("response").innerHTML = result;
-        });
+        //     // Display PHP's response
+        //     const result = await response.text();
+        //     document.getElementById("response").innerHTML = result;
+        // });
 //---------------------------------------------------------------------------
     </script>
     <?php
