@@ -15,9 +15,9 @@ input{
 .OMcontsRadio{
     position: relative;
     top: 50%; left: 50%;
-    transform: translate(-52%, 100%);
+    transform: translate(-52%, -60%);
     z-index: 999;
-    opacity: 1;
+    opacity: 0;
     cursor: pointer;
 }
 #optionsMenu{

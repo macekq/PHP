@@ -241,7 +241,7 @@
                     document.getElementById(i).style.backgroundColor = "white"
                 }
             }
-            document.getElementById('souboryLink').innerText = `localhost/php/projektZWA/${USER.currDir}/${name}`
+            document.getElementById('cpLink').innerText = `localhost/php/projektZWA/${USER.currDir}/${name}`
             document.getElementById('souboryLink').href = `${USER.currDir}/${name}`
         }
         function showDirContent(dir){
@@ -250,7 +250,7 @@
             const dirList = document.getElementById('obsahDirList')
             dirList.innerHTML = ''
 
-            document.getElementById('souboryLink').innerText = `localhost/php/projektZWA/${USER.currDir}`
+            document.getElementById('cpLink').innerText = `localhost/php/projektZWA/${USER.currDir}`
             document.getElementById('souboryLink').href = `${USER.currDir}`
 
             for(let i = 0; i<USER.files.length; i++){
@@ -350,21 +350,21 @@
 //---------------------------------------------------------------------------
     </script>
     <?php
-    function searchDir($dir){
-        $files = scandir($dir);
+        function searchDir($dir){
+            $files = scandir($dir);
 
-        foreach ($files as $file) {
-            if ($file != '.' && $file != '..') {
-                if(str_contains($file, ".")){
+            foreach ($files as $file) {
+                if ($file != '.' && $file != '..') {
+                    if(str_contains($file, ".")){
 
-                    echo "<script>addFromDir('{$file}','{$dir}')</script>";
-                }else{
-                    echo "<script>addFromDir('{$file}','{$dir}')</script>";
-                    searchDir("{$dir}/{$file}");
+                        echo "<script>addFromDir('{$file}','{$dir}')</script>";
+                    }else{
+                        echo "<script>addFromDir('{$file}','{$dir}')</script>";
+                        searchDir("{$dir}/{$file}");
+                    }
                 }
             }
         }
-    }
     // //----------------------------------------------------------------------------
     // session_start();
 
@@ -403,6 +403,7 @@
         $sql = "INSERT INTO projektZWA (jmeno, heslo, email, stat, datum) VALUES ('$name', '$passwd', '$email', '$stat', CURDATE())";
         mysqli_query($connection, $sql);
         
+        echo "true";
     }
     if(isset($_POST["nameL"]) && isset($_POST["passL"])){
         $name = $_POST["nameL"]; $passwd = $_POST["passL"];
@@ -417,7 +418,7 @@
                 // echo "<script>console.log('" . $row['jmeno'] ."','". $row['heslo'] . "','". $row['email'] . "','". $row['datum'] . "')</script>";
                 $USERNAME = $row["jmeno"];
                 echo "<script>document.getElementById('username').innerText = '{$USERNAME}'</script>";
-                echo "<script>document.getElementById('souboryLink').innerText = 'localhost/php/projektZWA/data/{$USERNAME}'</script>";
+                // echo "<script>document.getElementById('souboryLink').innerText = 'localhost/php/projektZWA/data/{$USERNAME}'</script>";
                 echo "<script>USER.name='{$USERNAME}'</script>";
 
                 $dir = "data/{$USERNAME}";
