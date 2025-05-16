@@ -1,24 +1,8 @@
 <?php
-header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
-header("Cache-Control: post-check=0, pre-check=0", false);
-header("Pragma: no-cache");
+// header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+// header("Cache-Control: post-check=0, pre-check=0", false);
+// header("Pragma: no-cache");
 
-function getDirectoryContents($dir) {
-    $result = ['files' => [], 'dirs' => []];
-    $files = scandir($dir);
-
-    foreach ($files as $file) {
-        if ($file != '.' && $file != '..') {
-            $path = $dir . '/' . $file;
-            if (is_dir($path)) {
-                $result['dirs'][$file] = getDirectoryContents($path);
-            } else {
-                $result['files'][] = $file;
-            }
-        }
-    }
-    return $result;
-}
 
 if (isset($_GET["nazev"]) && isset($_GET["SS"])) {
     $slozka_soubor = $_GET["SS"];
@@ -26,15 +10,25 @@ if (isset($_GET["nazev"]) && isset($_GET["SS"])) {
     $dir = $_GET["path"];
     $mainDir = $_GET["mainDir"];
 
-    if ($slozka_soubor) {
+    if ($slozka_soubor == "true") {
         mkdir("{$dir}/{$nazev}");
     } else {
-        file_put_contents("{$dir}/{$nazev}", 'mama te nechtela');
+        if(!str_contains($nazev, ".")){
+            file_put_contents("{$dir}/{$nazev}.txt", "");
+        }else{
+            file_put_contents("{$dir}/{$nazev}", "");
+        }
     }
     
-    // Return the updated directory structure
-    header('Content-Type: application/json');
-    echo json_encode(getDirectoryContents($mainDir));
-    exit;
+    // // Return the updated directory structure
+    // header('Content-Type: application/json');
+
+    // getDirectoryContents($mainDir);
+    // $result = [
+    //     "files" => $fileArr, "dirs" => $asocArr
+    // ];
+    
+    // echo json_encode($result);
+    // exit;
 }
 ?>

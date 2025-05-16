@@ -1,6 +1,4 @@
 <?php
-    session_start();
-
     require "login-register.php";
 
     $dbServer = "localhost";
@@ -140,84 +138,25 @@
         async function submitForm(action) {
             let nazev, isFolder;
             if (action == "folder") {
-                nazev = window.prompt("nazev slozky:");
-                isFolder = true;
+                nazev = window.prompt("nazev slozky:\nestli tam das . tak ji odstranim");
+                nazev = nazev.split(".").join("")
+                isFolder = "true";
             } else {
                 nazev = window.prompt("nazev souboru i s typem souboru:\n(all files)");
-                isFolder = false;
+                isFolder = "false";
             }
             
             if (!nazev) return; // User canceled the prompt
             
             try {
-                const response = await fetch(`pokus.php?nazev=${encodeURIComponent(nazev)}&SS=${isFolder}&path=${encodeURIComponent(USER.currDir)}&mainDir=data/${encodeURIComponent(USER.name)}`);
-                const data = await response.json();
-                
-                // Process the returned data and update USER object
-                updateUserWithDirectoryData(data);
-                
+                const response = await fetch(`pokus.php?nazev=${(nazev)}&SS=${isFolder}&path=${(USER.currDir)}&mainDir=data/${(USER.name)}`);
             } catch (error) {
                 console.error('Error:', error);
             }
-        }
-
-        function updateUserWithDirectoryData(data, currentPath = '') {
-            // Clear existing data
-            USER.files = [];
-            USER.filesAsocDir = [];
-            
-            // Recursive function to process directory structure
-            function processDirectory(dirData, path) {
-                // Add files
-                dirData.files.forEach(file => {
-                    USER.files.push(file);
-                    USER.filesAsocDir.push(path ? `${path}/${file}` : file);
-                });
-                
-                // Process subdirectories
-                Object.entries(dirData.dirs).forEach(([dirName, dirContents]) => {
-                    const newPath = path ? `${path}/${dirName}` : dirName;
-                    // Add the directory itself
-                    USER.files.push(dirName);
-                    USER.filesAsocDir.push(newPath);
-                    // Process its contents
-                    processDirectory(dirContents, newPath);
-                });
-            }
-            
-            processDirectory(data, '');
-            console.log('Updated USER:', USER);
-            showDirContent(`data/${USER.name}`)
-        }
-        /*
-        var USER = {
-            selected: '', name: '', ctecka: '', editor: '',
-            files: [], filesAsocDir: [], currDir: '', ids: []
-        }
-
-        async function submitForm(action) {
-            let response;
-            if(action == "folder"){
-                let nazevSlozky
-                do{
-                    nazevSlozky = window.prompt(`nazev slozky:\n(bez ".")`);
-                }while(nazevSlozky.includes("."))
-
-                response = await fetch(`pokus.php?nazev=${nazevSlozky}&SS=pravda&path=${USER.currDir}&mainDir=data/${USER.name}`, {
-                method: "GET",
-                // body: new FormData(e.target),
-            });
-            }else{
-                let nazevSouboru = window.prompt("nazev souboru i s typem souboru:\n(all files)")
-                
-                response = await fetch(`pokus.php?nazev=${nazevSouboru}&SS=lez&path=${USER.currDir}&mainDir=data/${USER.name}`, {
-                method: "GET",
-                // body: new FormData(e.target),
-            });
-            }
-            
-        }
-        */
+            USER.files.push(nazev)
+            USER.filesAsocDir.push(USER.currDir)
+            showDirContent(USER.currDir)
+        }        /*      */
         function addFromDir(name, dirName){
             USER.files.push(name)
             USER.filesAsocDir.push(dirName)
@@ -397,6 +336,54 @@
     // //     echo "Hello, " . htmlspecialchars($name) . "! (Server response)";
     // //     exit; // Stops PHP from rendering the rest of the page on AJAX calls
     // // }
+
+    if(isset($_POST["nameR"]) && isset($_POST["passR"]) && isset($_POST["mailR"]) && isset($_POST["statR"])){
+
+        $name = $_POST["nameR"]; $passwd = $_POST["passR"]; $email = $_POST["mailR"]; $stat = $_POST["statR"];
+
+        $sql = "INSERT INTO projektZWA (jmeno, heslo, email, stat, datum) VALUES ('$name', '$passwd', '$email', '$stat', CURDATE())";
+        mysqli_query($connection, $sql);
+        
+        echo "true";
+    }
+    if(isset($_POST["nameL"]) && isset($_POST["passL"])){
+        $name = $_POST["nameL"]; $passwd = $_POST["passL"];
+        
+        $sql = "SELECT * FROM projektZWA WHERE jmeno = '{$name}' AND heslo = '$passwd'";
+        $result = mysqli_query($connection, $sql);
+    
+        if(mysqli_num_rows($result) > 0){
+
+            while($row = mysqli_fetch_assoc($result)){
+    
+                // echo "<script>console.log('" . $row['jmeno'] ."','". $row['heslo'] . "','". $row['email'] . "','". $row['datum'] . "')</script>";
+                $USERNAME = $row["jmeno"];
+                echo "<script>document.getElementById('username').innerText = '{$USERNAME}'</script>";
+                // echo "<script>document.getElementById('souboryLink').innerText = 'localhost/php/projektZWA/data/{$USERNAME}'</script>";
+                echo "<script>USER.name='{$USERNAME}'</script>";
+
+                $dir = "data/{$USERNAME}";
+                searchDir($dir);
+
+                echo "<script>showDirContent('{$dir}')</script>";
+
+                echo "<script>hideForms()</script>";
+
+                $sql = "SELECT jmeno FROM projektZWA WHERE jmeno = '{$name}'";
+                $result = mysqli_query($connection, $sql);
+
+                while($row = mysqli_fetch_assoc($result)){
+                    echo "<br>" . $row["jmeno"];
+                    $dir = "data/". $row["jmeno"];
+                    if(!file_exists($dir)){
+                        mkdir($dir);
+                    }
+                }
+            }
+        }else{
+            echo "<script>window.alert('jmeno neexistuje nebo se neshoduje heslo')</script>";
+        }
+    }
 ?>
 </body>
 </html>
