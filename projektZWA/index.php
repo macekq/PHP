@@ -1,4 +1,6 @@
 <?php
+    session_start();
+
     require "login-register.php";
 
     $dbServer = "localhost";
@@ -395,54 +397,6 @@
     // //     echo "Hello, " . htmlspecialchars($name) . "! (Server response)";
     // //     exit; // Stops PHP from rendering the rest of the page on AJAX calls
     // // }
-
-    if(isset($_POST["nameR"]) && isset($_POST["passR"]) && isset($_POST["mailR"]) && isset($_POST["statR"])){
-
-        $name = $_POST["nameR"]; $passwd = $_POST["passR"]; $email = $_POST["mailR"]; $stat = $_POST["statR"];
-
-        $sql = "INSERT INTO projektZWA (jmeno, heslo, email, stat, datum) VALUES ('$name', '$passwd', '$email', '$stat', CURDATE())";
-        mysqli_query($connection, $sql);
-        
-        echo "true";
-    }
-    if(isset($_POST["nameL"]) && isset($_POST["passL"])){
-        $name = $_POST["nameL"]; $passwd = $_POST["passL"];
-        
-        $sql = "SELECT * FROM projektZWA WHERE jmeno = '{$name}' AND heslo = '$passwd'";
-        $result = mysqli_query($connection, $sql);
-    
-        if(mysqli_num_rows($result) > 0){
-
-            while($row = mysqli_fetch_assoc($result)){
-    
-                // echo "<script>console.log('" . $row['jmeno'] ."','". $row['heslo'] . "','". $row['email'] . "','". $row['datum'] . "')</script>";
-                $USERNAME = $row["jmeno"];
-                echo "<script>document.getElementById('username').innerText = '{$USERNAME}'</script>";
-                // echo "<script>document.getElementById('souboryLink').innerText = 'localhost/php/projektZWA/data/{$USERNAME}'</script>";
-                echo "<script>USER.name='{$USERNAME}'</script>";
-
-                $dir = "data/{$USERNAME}";
-                searchDir($dir);
-
-                echo "<script>showDirContent('{$dir}')</script>";
-
-                echo "<script>hideForms()</script>";
-
-                $sql = "SELECT jmeno FROM projektZWA WHERE jmeno = '{$name}'";
-                $result = mysqli_query($connection, $sql);
-
-                while($row = mysqli_fetch_assoc($result)){
-                    echo "<br>" . $row["jmeno"];
-                    $dir = "data/". $row["jmeno"];
-                    if(!file_exists($dir)){
-                        mkdir($dir);
-                    }
-                }
-            }
-        }else{
-            echo "<script>window.alert('jmeno neexistuje nebo se neshoduje heslo')</script>";
-        }
-    }
 ?>
 </body>
 </html>
