@@ -134,22 +134,53 @@
             selected: '', name: '', ctecka: '', editor: '',
             files: [], filesAsocDir: [], currDir: '', ids: []
         }
-
+        //-----------------------------------------------------------------------------
         async function submitForm(action) {
-            let nazev, isFolder;
+            let nazev, isFolder
+
             if (action == "folder") {
-                nazev = window.prompt("nazev slozky:");
-                isFolder = true;
+                nazev = window.prompt("nazev slozky:")
+                isFolder = true
+            
             } else {
-                nazev = window.prompt("nazev souboru i s typem souboru:\n(all files)");
-                isFolder = false;
+                nazev = window.prompt("nazev souboru i s typem souboru:\n(all files)")
+                isFolder = false
             }
             
-            if (!nazev) return; // User canceled the prompt
-            
+            let url = new URL('proces1.php', window.location.origin);
+
+            let postData = {
+                name: "bombardino",
+                lastName: "crocodilo"
+            }
+
+            try{
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(postData)
+                })
+
+                const result = await response.json()
+                console.log(result)
+
+            }catch(error){window.alert("skap pls")}
+
+            /*
             try {
-                const response = await fetch(`pokus.php?nazev=${encodeURIComponent(nazev)}&SS=${isFolder}&path=${encodeURIComponent(USER.currDir)}&mainDir=data/${encodeURIComponent(USER.name)}`);
+                let url = `pokus.php?nazev=${nazev}&SS=${isFolder}&path=${USER.currDir}&mainDir=data\\${USER.name}`
+                console.log("ok 1", url)
+                const response = await fetch(url);
+                const text = await response.text()
+
+                console.log("ok 2", response, text)
+
+
                 const data = await response.json();
+                
+                console.log("data = ", data)
                 
                 // Process the returned data and update USER object
                 updateUserWithDirectoryData(data);
@@ -157,6 +188,7 @@
             } catch (error) {
                 console.error('Error:', error);
             }
+            */
         }
 
         function updateUserWithDirectoryData(data, currentPath = '') {
@@ -185,37 +217,9 @@
             
             processDirectory(data, '');
             console.log('Updated USER:', USER);
-            showDirContent(`data/${USER.name}`)
+            showDirContent(USER.currDir)
         }
-        /*
-        var USER = {
-            selected: '', name: '', ctecka: '', editor: '',
-            files: [], filesAsocDir: [], currDir: '', ids: []
-        }
-
-        async function submitForm(action) {
-            let response;
-            if(action == "folder"){
-                let nazevSlozky
-                do{
-                    nazevSlozky = window.prompt(`nazev slozky:\n(bez ".")`);
-                }while(nazevSlozky.includes("."))
-
-                response = await fetch(`pokus.php?nazev=${nazevSlozky}&SS=pravda&path=${USER.currDir}&mainDir=data/${USER.name}`, {
-                method: "GET",
-                // body: new FormData(e.target),
-            });
-            }else{
-                let nazevSouboru = window.prompt("nazev souboru i s typem souboru:\n(all files)")
-                
-                response = await fetch(`pokus.php?nazev=${nazevSouboru}&SS=lez&path=${USER.currDir}&mainDir=data/${USER.name}`, {
-                method: "GET",
-                // body: new FormData(e.target),
-            });
-            }
-            
-        }
-        */
+        //-----------------------------------------------------------------------------
         function addFromDir(name, dirName){
             USER.files.push(name)
             USER.filesAsocDir.push(dirName)
@@ -250,11 +254,15 @@
             const dirList = document.getElementById('obsahDirList')
             dirList.innerHTML = ''
 
+            console.log(USER)
+
             document.getElementById('cpLink').innerText = `localhost/php/projektZWA/${USER.currDir}`
             document.getElementById('souboryLink').href = `${USER.currDir}`
 
             for(let i = 0; i<USER.files.length; i++){
+                console.log(USER.files[i], USER.filesAsocDir[i], 0)
                 if(USER.filesAsocDir[i] == dir){
+                    console.log(true, 1)
 
                     let name = USER.files[i]
 
@@ -333,21 +341,6 @@
                 }
             });
         }
-//---------------------------------------------------------------------------
-        // document.getElementById("addFF").addEventListener("submit", async (e) => {
-        //     e.preventDefault(); // Prevent page refresh
-            
-        //     // Send form data to the SAME file (index.php)
-        //     const response = await fetch("pokus.php", {
-        //         method: "POST",
-        //         body: new FormData(e.target),
-        //     });
-            
-        //     // Display PHP's response
-        //     const result = await response.text();
-        //     document.getElementById("response").innerHTML = result;
-        // });
-//---------------------------------------------------------------------------
     </script>
     <?php
         function searchDir($dir){
@@ -365,36 +358,6 @@
                 }
             }
         }
-    // //----------------------------------------------------------------------------
-    // session_start();
-
-    // // Handle login submission
-    // if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nameL'])) {
-    //     $username = $_POST['nameL'];
-    //     $password = $_POST['passwdL'];
-
-    //     // Validate credentials (e.g., against a database)
-    //     if ($username === "admin" && $password === "1234") { // Replace with real validation
-    //         $_SESSION['logged_in'] = true;
-    //         $_SESSION['username'] = $username;
-    //         header("Location: index.php"); // Redirect after login
-    //         exit;
-    //     } else {
-    //         $error = "Invalid credentials!";
-    //     }
-    // }
-
-    // // If already logged in, show the app
-    // if (isset($_SESSION['logged_in'])) {
-    //     include 'app.php'; // Your main application (AJAX interactions)
-    //     exit;
-    // }
-
-    // // if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // //     $name = $_POST['addFFBtt'] ?? '';
-    // //     echo "Hello, " . htmlspecialchars($name) . "! (Server response)";
-    // //     exit; // Stops PHP from rendering the rest of the page on AJAX calls
-    // // }
 
     if(isset($_POST["nameR"]) && isset($_POST["passR"]) && isset($_POST["mailR"]) && isset($_POST["statR"])){
 
