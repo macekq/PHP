@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Cal+Sans&family=Roboto:wght@700&display=swap" rel="stylesheet');
-@import url('href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet');
+/* @import url('href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet'); */
 
 body{
     font-family: "Cal Sans", sans-serif;
@@ -8,11 +8,11 @@ body{
 input{
     font-family: "Cal Sans", sans-serif;
 }
-input[type="radio"]{
+.OMcontsRadio{
     position: absolute;
     width: 95%; height: 82%;
 }
-input[type="radio"]{
+.OMcontsRadio{
     position: relative;
     top: 50%; left: 50%;
     transform: translate(-52%, -60%);
@@ -156,6 +156,7 @@ input[type="radio"]{
 #obsahDirList li nav{
     width: 100%;
     /* background-color: rgba(255,0,0,0.2); */
+    user-select: none;
 }
 #obsahDirList li:hover{
     color: black;
@@ -166,6 +167,8 @@ input[type="radio"]{
     transition: 0.25s;
 }
 #obsahDirList li{
+    user-select: none;
+
     padding-left: 1%;
     cursor: pointer;
     transition: 0.1s;

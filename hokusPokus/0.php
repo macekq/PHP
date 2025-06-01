@@ -97,6 +97,8 @@
                 // echo "<script>writeOutContent('" . $content . "')</script>";
             }
         }
+
+        //=======================================================
         if(isset($_POST["nazevSouboru"])){
             $nazev = $_POST["nazevSouboru"];
 
@@ -112,6 +114,7 @@
                 echo "<script>writeOutContent('" . $clean_text . "')</script>";
             }
         }
+        //=======================================================
 
         if(isset($_POST["dir"])){
             $dir = $_POST["dir"];

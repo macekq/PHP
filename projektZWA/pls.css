@@ -109,7 +109,8 @@ input{
     position: absolute;
 }
 #adresaSoubory{
-    width: 60vw; height: 5vh;
+    max-width: 80vw; min-width: 40vw;
+    height: 5vh;
     position: relative;
     left: 50%; transform: translateX(-50%);
     /* background-color: rgba(255,0,0,0.2); */
@@ -156,6 +157,7 @@ input{
 #obsahDirList li nav{
     width: 100%;
     /* background-color: rgba(255,0,0,0.2); */
+    user-select: none;
 }
 #obsahDirList li:hover{
     color: black;
@@ -166,6 +168,8 @@ input{
     transition: 0.25s;
 }
 #obsahDirList li{
+    user-select: none;
+
     padding-left: 1%;
     cursor: pointer;
     transition: 0.1s;

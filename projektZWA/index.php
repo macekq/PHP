@@ -12,7 +12,7 @@
     if(!$connection) error_log("databazi nelze pripojit");
     else echo "<script>console.log('databaze pripojena')</script>";
 
-    mysqli_query($connection, 'ALTER TABLE projektZWA MODIFY COLUMN id INT NOT NULL AUTO_INCREMENT')
+    mysqli_query($connection, 'ALTER TABLE projektZWA MODIFY COLUMN id INT NOT NULL AUTO_INCREMENT');
     // $sql = "ALTER TABLE projektZWA MODIFY COLUMN id INT AUTO_INCREMENT;";
     // mysqli_query($connection, $sql);
 ?>
@@ -48,8 +48,8 @@
                     <nav id="editorInputCont">
                         <form method="post" id="editorForm">
                             <nav id="editorOptions">
-                                <input type="submit" name="editorSubmitBtt" value="saveChanges">
-                                <input type="submit" name="editorSubmitBtt" value="discardChanges">
+                                <button type="button" class="sCHbtt" onclick="saveChanges()">save changes</button>
+                                <button type="button" class="sCHbtt" onclick="discardChanges()">discard changes</button>
                             </nav>
                             <nav id="editorInput">
                                 <textarea name="textEditor" id="textEditor"></textarea>
@@ -59,7 +59,10 @@
                     <nav id="editorOutputCont">
                         <nav id="iframeOptions">
                             <div>url - </div>
-                            <a href="http://127.0.0.1:5500/hokusPokus/0.html" target="_blank" id="editorLink"><nav id="cpLinkEditor">http://127.0.0.1:5500/hp/hokusPokus/0.html</nav></a>
+                            <a href="http://127.0.0.1:5500/hokusPokus/0.html" target="_blank" id="editorLink">
+                                <nav id="cpLinkEditor">http://127.0.0.1:5500/hp/hokusPokus/0.html</nav>
+                            </a>
+                            
                             <div id="cpBttContEdit">
                                 <button type="button" id="cpDirEditor" onclick="ctrlC('cpLinkEditor')">
                                     <img src="assets/copy.png">
@@ -67,7 +70,7 @@
                             </div>
                         </nav>
                         <div id="iframeCont">
-                            <iframe src="makeItTierList/index.html" frameborder="0"></iframe>
+                            <iframe id="editorIframe" src="makeItTierList/index.html" frameborder="0"></iframe>
                         </div>
                     </nav>
 
@@ -95,9 +98,8 @@
                             <button class="sCHbtt" onclick="cd00()">
                                 <img src="assets/arrow.png" style="transform: rotate(180deg) translateY(-8%);">
                             </button>
-                            <form method="post" id="addFF">                                    
-                                <input type="hidden" name="nazevFF" id="nazevFF">
 
+                            <form method="get" id="addFF">
                                 <button type="button" name="addFFBtt" class="sCHbtt" onclick="submitForm('folder')">
                                     <img src="assets/addFolder.png">
                                 </button>
@@ -105,11 +107,18 @@
                                     <img src="assets/addFile.png">
                                 </button>
                             </form>
+                        
                         </nav>
                         <nav id="dirOp2">
-                            <button class="sCHbtt" id="removeFileBtt">-</button>
-                            <button class="sCHbtt">editor</button>
-                            <button class="sCHbtt">ctecka</button>
+                        
+                            <form method="get" id="removeFF">
+                                <button type="button" class="sCHbtt" id="removeFileBtt" onclick="removeFF()">-</button>
+                            </form>
+                            
+                            <form method="get" id="openInE||C">
+                                <button type="button" class="sCHbtt" onclick="openInEC('e')">editor</button>
+                                <button type="button" class="sCHbtt" onclick="openInEC('c')">ctecka</button>
+                            </form>    
                         </nav>
                     </div>
                     <div id="obsahDir">
@@ -123,6 +132,10 @@
                                 <img class="dirIcon" src="assets/arrow.png">
                             </li> -->
                         </ul>
+                        <form method="post" id="uploadFile">
+                            <input type="file">
+                            <button type="button" onclick="uploadFile()">upload</button>
+                        </form>
                     </div>
                 </div>
             </nav>
@@ -130,94 +143,169 @@
     </div>
 
     <script>
+        const textEditor = document.getElementById("textEditor"), textCtecka = document.getElementById("cteckaCont")
+        const editorIframe = document.getElementById("editorIframe"), editorLink = document.getElementById("cpLinkEditor"), editorLinkHref = document.getElementById("editorLink")
+        const fileUpload = document.getElementById("uploadFile")
+
         var USER = {
-            selected: '', name: '', ctecka: '', editor: '',
-            files: [], filesAsocDir: [], currDir: '', ids: []
+            selected: '', name: '', ctecka: '', editor: '', editorContent: '', cteckaContent: '',
+            files: [], filesAsocDir: [], currDir: '', ids: [],
         }
         //-----------------------------------------------------------------------------
         async function submitForm(action) {
             let nazev, isFolder
 
             if (action == "folder") {
-                nazev = window.prompt("nazev slozky:")
-                isFolder = true
+                nazev = ridStringOf(window.prompt("nazev slozky:\n(jestli tam das tecku '.' tak ji smazu)"), ".")
+                isFolder = "true"
             
             } else {
                 nazev = window.prompt("nazev souboru i s typem souboru:\n(all files)")
-                isFolder = false
+                if(!nazev.includes(".")) nazev += ".txt"
+                isFolder = "false"
             }
             
-            let url = new URL('proces1.php', window.location.origin);
-
-            let postData = {
-                name: "bombardino",
-                lastName: "crocodilo"
-            }
+            let url = `http://localhost/PHP/projektZWA/proces1.php?nazev=${nazev}&path=${USER.currDir}&SS=${isFolder}`;
 
             try{
                 const response = await fetch(url, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(postData)
+                    method: "GET",
                 })
 
-                const result = await response.json()
-                console.log(result)
+                USER.files.push(nazev)
+                USER.filesAsocDir.push(USER.currDir)
 
-            }catch(error){window.alert("skap pls")}
+                showDirContent(USER.currDir)
 
-            /*
-            try {
-                let url = `pokus.php?nazev=${nazev}&SS=${isFolder}&path=${USER.currDir}&mainDir=data\\${USER.name}`
-                console.log("ok 1", url)
-                const response = await fetch(url);
-                const text = await response.text()
-
-                console.log("ok 2", response, text)
-
-
-                const data = await response.json();
-                
-                console.log("data = ", data)
-                
-                // Process the returned data and update USER object
-                updateUserWithDirectoryData(data);
-                
-            } catch (error) {
-                console.error('Error:', error);
-            }
-            */
+            }catch(error){window.alert("hopa")}
         }
+        async function removeFF(){
+            
+            if(window.confirm("chcete smazat slozku/soubor?") !== null){
+                let isFolder
+                if(USER.selected.includes(".")){
+                    isFolder = "false"
+                }else{
+                    isFolder = "true"
+                }
 
-        function updateUserWithDirectoryData(data, currentPath = '') {
-            // Clear existing data
-            USER.files = [];
-            USER.filesAsocDir = [];
-            
-            // Recursive function to process directory structure
-            function processDirectory(dirData, path) {
-                // Add files
-                dirData.files.forEach(file => {
-                    USER.files.push(file);
-                    USER.filesAsocDir.push(path ? `${path}/${file}` : file);
-                });
+                let url = `http://localhost/PHP/projektZWA/proces2.php?nazev=${USER.selected}&dir=${USER.currDir}&SS=${isFolder}`
+                // window.alert(url)
+
+                try{
+                    const response = await fetch(url, {
+                        method: "GET"
+                    })
+
+                    for(let i = 0; i<USER.files.length; i++){
+                        if(USER.selected == USER.files[i] && USER.currDir == USER.filesAsocDir[i]){
+                            
+                            USER.files.splice(i, 1)
+                            USER.filesAsocDir.splice(i, 1)
+                            break
+                        }
+                    }
+                    showDirContent(USER.currDir)
                 
-                // Process subdirectories
-                Object.entries(dirData.dirs).forEach(([dirName, dirContents]) => {
-                    const newPath = path ? `${path}/${dirName}` : dirName;
-                    // Add the directory itself
-                    USER.files.push(dirName);
-                    USER.filesAsocDir.push(newPath);
-                    // Process its contents
-                    processDirectory(dirContents, newPath);
-                });
+                }catch(error){window.alert("hopa")}
             }
+        }
+        async function openInEC(EC){
+            let name = USER.selected, dir = USER.currDir
             
-            processDirectory(data, '');
-            console.log('Updated USER:', USER);
-            showDirContent(USER.currDir)
+            if(name.includes(".")){
+                
+                let url = `http://localhost/php/projektZWA/proces3.php?nazev=${name}&dir=${dir}`
+
+                const response = await fetch(url, {
+                    method: "GET"
+                })
+                if(response.ok){
+                    let returnString = await response.text()
+
+                    if(EC == 'c'){
+                        USER.ctecka = `${USER.currDir}/${USER.selected}`
+                        USER.cteckaContent = returnString
+
+                        textCtecka.innerText = returnString.split('■').join('\n')
+                        window.alert("otevreno ve ctecce")
+                    
+                    }else{
+                        USER.editor = `${USER.currDir}/${USER.selected}`
+                        USER.editorContent = returnString
+
+                        textEditor.value = returnString.split('■').join('\n')
+
+                        editorIframe.src = `http://localhost/php/projektZWA/${USER.editor}`
+                        editorLink.innerText = `http://localhost/php/projektZWA/${USER.editor}`
+                        editorLinkHref.href = `http://localhost/php/projektZWA/${USER.editor}`
+                        
+                        window.alert("otevreno v editoru")
+                    }
+                }else{
+                    window.alert("hopa")
+                }
+
+            }else{
+                window.alert("toe slozka ty sasku")
+            }
+        }
+        async function saveChanges(){
+
+            if(window.confirm("opravdu chtete ulozit zmeny?" !== null)){
+
+                let url = `http://localhost/php/projektZWA/proces4.php`
+
+                try{
+                    const response = await fetch(url, {
+                        method: "POST",
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded', // or 'application/json'
+                        },
+                        body: new URLSearchParams({
+                            fullDir: USER.editor,
+                            content: textEditor.value
+                        })
+                    })
+
+                    USER.editorContent = textEditor.value
+                    editorIframe.src = USER.editor
+
+                }catch(error){window.alert("hopa")}
+            }
+        }
+        async function uploadFile(){
+            if(!fileUpload.files || fileUpload.files.length === 0){
+                
+                window.alert("nejprve vloz soubor")
+            }else{
+
+                const formData = new FormData()
+                const file = fileUpload.files[0]
+                formData.append('file', file)
+            
+                let url = `http://localhost/php/projektZWA/proces5.php`
+                try{
+                    const response = await fetch(url, {
+                        method: "POST",
+                        body: formData
+                    })
+
+                }catch(error){window.alert("hopa fr")}
+            }
+        }
+        function discardChanges(){
+            if(window.confirm("opravdu chtete smazat vsechny zmeny?" !== null)){
+        
+                textEditor.value = USER.editorContent.split('■').join('\n')
+            }
+        }
+        function ridStringOf(string, char){
+            let newString = ""
+            for(let i of string){
+                if(i != char) newString += i
+            }
+            return newString
         }
         //-----------------------------------------------------------------------------
         function addFromDir(name, dirName){
@@ -225,11 +313,13 @@
             USER.filesAsocDir.push(dirName)
             console.log(USER)
         }
+
         function findSlash(str){
             for(let i = str.length-1; i>=0; i--){
                 if(str[i] == '/') return i
             }
         }
+
         function cd00(){
             let path = USER.currDir
             
@@ -238,19 +328,34 @@
                 showDirContent(path.substring(0, index))
             }
         }
+
         function selectFile(id, name){
-            document.getElementById(id).style.backgroundColor = "rgb(180,180,180)"
-            for(let i of USER.ids){
-                if(i!=id){
-                    document.getElementById(i).style.backgroundColor = "white"
+            if(name == USER.selected){
+
+                if(!name.includes(".")){
+
+                    showDirContent(`${USER.currDir}/${name}`)
                 }
+                
+            }else{
+                document.getElementById(id).style.backgroundColor = "rgb(180,180,180)"
+                for(let i of USER.ids){
+                    if(i!=id){
+                        document.getElementById(i).style.backgroundColor = "white"
+                    }
+                }
+                document.getElementById('cpLink').innerText = `localhost/php/projektZWA/${USER.currDir}/${name}`
+                document.getElementById('souboryLink').href = `${USER.currDir}/${name}`
+            
+                USER.selected = name
             }
-            document.getElementById('cpLink').innerText = `localhost/php/projektZWA/${USER.currDir}/${name}`
-            document.getElementById('souboryLink').href = `${USER.currDir}/${name}`
         }
+
         function showDirContent(dir){
             USER.currDir = dir
             USER.ids = []
+            USER.selected = ''
+
             const dirList = document.getElementById('obsahDirList')
             dirList.innerHTML = ''
 
@@ -281,9 +386,9 @@
                         img.src = "assets/file.png"
                     }else{
                         img.src = "assets/arrow.png"
-                        nav.addEventListener("click", () => {
-                            showDirContent(`${USER.filesAsocDir[i]}/${USER.files[i]}`)
-                        })
+                        // nav.addEventListener("click", () => {
+                        //     showDirContent(`${USER.filesAsocDir[i]}/${USER.files[i]}`)
+                        // })
                     }
 
                     let id
@@ -341,6 +446,22 @@
                 }
             });
         }
+        textEditor.addEventListener('keydown', function(e) {
+            if (e.key === 'Tab') {
+                e.preventDefault(); // Prevent default tab behavior
+                
+                // Get current cursor position
+                const start = this.selectionStart;
+                const end = this.selectionEnd;
+                const value = this.value;
+                
+                // Insert tab character
+                this.value = value.substring(0, start) + '\t' + value.substring(end);
+                
+                // Move cursor position after the inserted tab
+                this.selectionStart = this.selectionEnd = start + 1;
+            }
+        });
     </script>
     <?php
         function searchDir($dir){

@@ -1,47 +1,22 @@
 <?php
 
-    header("Content-Type: application/json");
+// header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+// header("Cache-Control: post-check=0, pre-check=0", false);
+// header("Pragma: no-cache");
 
-    $filesArr = [];
-    $asocArr = []; 
+header("Location: http://localhost/PHP/projektZWA/index.php");
 
-    function searchThisDir($dir){
-        global $filesArr;
-        global $asocArr;
+if (isset($_GET["nazev"]) && isset($_GET["SS"])) {
+    $slozka_soubor = $_GET["SS"];
+    $nazev = $_GET["nazev"];
+    $dir = $_GET["path"];
 
-        $files = scandir($dir);
-
-        foreach($files as $i){
-            if($i != "." && $i != ".."){
-                if(!str_contains($i, ".")){
-    
-                    searchThisDir("{$dir}/{$i}");
-                }
-                $filesArr[] = $i;
-                $asocArr[] = $dir;
-            }
-        }
+    if ($slozka_soubor == "true") {
+        mkdir("{$dir}/{$nazev}");
+    } else {
+        file_put_contents("{$dir}/{$nazev}", '');
     }
 
-    $dir = $_GET["dir"];
-    $mainDir = $_GET["mainDir"];
-    $FF = $_GET["FF"];
-    $name = $_GET["name"];
-
-    $postData = json_decode(file_get_contents("php://input"), true) ?? $_POST;
-
-    if($FF){
-        mkdir("{$dir}/{$name}");
-    }else{
-        file_put_contents("{$dir}/{$name}", "idk");
-    }
-
-    searchThisDir($mainDir);
-
-    $result = [
-        "files" => $filesArr,
-        "dirs" => $asocArr
-    ];
-
-    echo json_encode($result);
+    exit;
+}
 ?>
