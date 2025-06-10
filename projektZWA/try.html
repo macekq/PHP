@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+
+.fileDownloadBtt{
+    position: absolute;
+}
+.fileDownloadBtt{
+    position: relative;
+    left: -5%;
+    height: 2vh; width: 2vh;
+}
+.fileDownloadBtt img{
+    width: 100%; height: 100%;
+}
+.fileDownloadBtt:hover{
+    border-radius: 3px;
+    background-color: white;
+    filter: invert(1);
+}
+
+
+#adresaSoubory{
+    position: absolute;
+}
+#adresaSoubory{
+    max-width: 80vw; min-width: 40vw;
+    height: 5vh;
+    position: relative;
+    left: 50%; transform: translateX(-50%);
+    /* background-color: rgba(255,0,0,0.2); */
+    display: flex;
+    justify-content: center;
+    font-size: 1.2em;
+    border-bottom: 2px solid black;
+}
+#souboryLink nav{
+    position: absolute;
+}
+#souboryLink nav{
+    position: relative;
+    top: 50%; transform: translateY(-50%);
+}
+#souboryLink{
+    font-family: Arial, Helvetica, sans-serif;
+}
+#adresaSoubory div{
+    line-height: 5vh;
+    font-weight: bold;
+    width: 5vh;
+}
+#adresaSoubory button{
+    background-color: rgba(0,0,0,0);
+    border: 0;
+    cursor: pointer;
+}
+#cpBttCont{
+    display: flex;
+    justify-content: center;
+}
+#adresaSoubory img{
+    height: 2vh;
+}
+#obsahDirList{
+    position: absolute;
+}
+#obsahDirList{
+    position: relative;
+    left: 50%; transform: translateX(-50%);
+    width: 80vw;
+}
+#obsahDirList li nav{
+    width: 100%;
+    /* background-color: rgba(255,0,0,0.2); */
+    user-select: none;
+}
+#obsahDirList li:hover{
+    color: black;
+    background-color: white;
+
+    filter: invert(1);
+
+    transition: 0.25s;
+}
+#obsahDirList li{
+    user-select: none;
+
+    padding-left: 1%;
+    cursor: pointer;
+    transition: 0.1s;
+    height: 2vh; line-height: 2vh;
+    /* background-color: rgba(0,0,255,0.2); */
+    border-bottom: 2px solid black;
+    display: flex;
+}
+.sCHbtt img{
+    width: 2vh;
+}
+.sCHbtt{
+    font-family: "Cal Sans", sans-serif;
+    height: 3vh;
+    min-width: 3vh;
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: rgba(0,0,0,0);
+    cursor: pointer;
+    transition: 0.1s;
+    margin-left: 0.5vh;
+}
+.sCHbtt:hover{
+    transition: 0.25s;
+    /* background-color: black;
+    border-color: white;
+    color: white; */
+    background-color: white;
+    filter: invert(1)
+}
+#dirOptions{
+    position: absolute;
+}
+#dirOptions{
+    margin-top: 2.5vh;
+    position: relative;
+    left: 50%; transform: translateX(-50%);
+    width: 80vw; height: 3vh;
+    /* background-color: rgba(255,0,0,0.2); */
+    display: flex;
+}
+#dirOp2{
+    position: absolute;
+}
+#dirOp2{
+    position: absolute;
+    left: 100%; transform: translateX(-100%);
+    display: flex;
+}
+@media(orientation: portrait){
+    /* #adresaSoubory{
+        width: 50vw; height: 5vw;
+    } */
+}
+</style>
+<body>
+    <div class="WS" id="souboryWS">
+                    
+        <div id="adresaSoubory">
+            <div>url - </div>
+            <a href="http://127.0.0.1:5500/hokusPokus/0.html" target="_blank" id="souboryLink"><nav id="cpLink">http://127.0.0.1:5500/hokusPokus/0.html</nav></a>
+            <div id="cpBttCont">
+                <button type="button" name="cpDir" id="cpDir" value="copy" onclick="ctrlC('cpLink')">
+                    <img src="assets/copy.png">
+                </button>
+            </div>
+        </div>
+        <div id="dirOptions">
+            <nav style="display: flex;">
+                <button class="sCHbtt" onclick="cd00()">
+                    <img src="assets/arrow.png" style="transform: rotate(180deg) translateY(-8%);">
+                </button>
+
+                <form method="get" id="addFF">
+                    <button type="button" name="addFFBtt" class="sCHbtt" onclick="submitForm('folder')">
+                        <img src="assets/addFolder.png">
+                    </button>
+                    <button type="button" name="addFFBtt" class="sCHbtt" onclick="submitForm('file')">
+                        <img src="assets/addFile.png">
+                    </button>
+                </form>
+            
+            </nav>
+            <nav id="dirOp2">
+            
+                <form method="get" id="removeFF">
+                    <button type="button" class="sCHbtt" id="removeFileBtt" onclick="removeFF()">-</button>
+                </form>
+                
+                <form method="get" id="openInE||C">
+                    <button type="button" class="sCHbtt" onclick="openInEC('e')">editor</button>
+                    <button type="button" class="sCHbtt" onclick="openInEC('c')">ctecka</button>
+                </form>    
+            </nav>
+        </div>
+        <div id="obsahDir">
+            <ul id="obsahDirList">
+                <!-- <li class="soubor">
+                    <nav>skap.php</nav>
+                    <img class="dirIcon" src="assets/file.png">
+                </li>
+                <li class="slozka">
+                    <nav>assets</nav>
+                    <img class="dirIcon" src="assets/arrow.png">
+                </li> -->
+                <li id="file-269" style="background-color: white;"><nav>1</nav><a download="1" href="data/user/1" class="fileDownloadBtt"><img src="assets/download.png"></a><img src="assets/arrow.png" class="dirIcon"></li><li id="file-437" style="background-color: white;"><nav>idk.txt</nav><a download="idk.txt" href="data/user/idk.txt" class="fileDownloadBtt"><img src="assets/download.png"></a><img src="assets/file.png" class="dirIcon"></li><li id="file-204" style="background-color: rgb(180, 180, 180);"><nav>index.html</nav><a download="index.html" href="data/user/index.html" class="fileDownloadBtt"><img src="assets/download.png"></a><img src="assets/file.png" class="dirIcon"></li><li id="file-763" style="background-color: white;"><nav>kfs.txt</nav><a download="kfs.txt" href="data/user/kfs.txt" class="fileDownloadBtt"><img src="assets/download.png"></a><img src="assets/file.png" class="dirIcon"></li><li id="file-542" style="background-color: white;"><nav>skapDoRana.txt</nav><a download="skapDoRana.txt" href="data/user/skapDoRana.txt" class="fileDownloadBtt"><img src="assets/download.png"></a><img src="assets/file.png" class="dirIcon"></li>
+            </ul>
+            <form method="post" id="uploadFile">
+                <input type="file">
+                <button type="button" onclick="uploadFile()">upload</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

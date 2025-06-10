@@ -143,6 +143,7 @@
     </div>
 
     <script>
+
         document.getElementById('userInfo').addEventListener('click', () => {
             if(window.confirm('opravdu se chcete odhlasit?')){
                 window.location.assign('/php/projektZWA')
@@ -377,10 +378,10 @@
             for(let i = 0; i<USER.files.length; i++){
                 console.log(USER.files[i], USER.filesAsocDir[i], 0)
                 if(USER.filesAsocDir[i] == dir){
-                    console.log(true, 1)
+                    // console.log(true, 1)
 
                     let name = USER.files[i]
-
+                    
                     let li = document.createElement('li')
                     let nav = document.createElement('nav')
                     let img = document.createElement('img')
@@ -388,25 +389,41 @@
                     nav.innerText = name
                     img.src = name.includes('.') ? 'assets/file.png' : 'assets/arrow.png';
                     img.classList.add('dirIcon')
-
-                    li.append(nav, img)
-                    dirList.appendChild(li)
-
+                    
                     if(name.includes('.')){
                         img.src = "assets/file.png"
+
+                        let a = document.createElement('a')
+                        let aImg = document.createElement('img')
+                        // a.download = true
+                        a.setAttribute("download", USER.files[i])
+        
+                        a.href = `${USER.filesAsocDir[i]}/${USER.files[i]}`
+                        a.appendChild(aImg)
+        
+                        a.classList.add('fileDownloadBtt')
+        
+                        aImg.src = "assets/download.png"
+
+
+                        li.append(nav, a, img)
                     }else{
                         img.src = "assets/arrow.png"
                         // nav.addEventListener("click", () => {
-                        //     showDirContent(`${USER.filesAsocDir[i]}/${USER.files[i]}`)
-                        // })
+                            //     showDirContent(`${USER.filesAsocDir[i]}/${USER.files[i]}`)
+                            // })
+                            li.append(nav, img)
                     }
-
-                    let id
                         
-                    do{
+                        let id
+                        
+                        do{
                         id = Math.floor(Math.random()*1000)
                     }while(USER.ids.includes(id))
                     
+                    
+                    dirList.appendChild(li)
+
                     li.id = `file-${id}`
                     USER.ids.push(li.id)
                     console.log(USER)

@@ -6,7 +6,7 @@
 
 header("Location: http://localhost/PHP/projektZWA/index.php");
 
-if (isset($_GET["nazev"]) && isset($_GET["SS"])) {
+if(isset($_GET["nazev"]) && isset($_GET["SS"])){
     $slozka_soubor = $_GET["SS"];
     $nazev = $_GET["nazev"];
     $dir = $_GET["path"];

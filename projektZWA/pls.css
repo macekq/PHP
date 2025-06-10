@@ -224,6 +224,24 @@ input{
         width: 50vw; height: 5vw;
     } */
 }
+
+
+.fileDownloadBtt{
+    position: absolute;
+}
+.fileDownloadBtt{
+    position: relative;
+    left: -5%;
+    height: 2vh; width: 2vh;
+}
+.fileDownloadBtt img{
+    width: 100%; height: 100%;
+}
+.fileDownloadBtt:hover{
+    border-radius: 3px;
+    background-color: white;
+    filter: invert(1);
+}
 /*SOUBORY*/
 .WS{
     position: absolute;
