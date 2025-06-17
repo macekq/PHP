@@ -230,7 +230,7 @@
                 })
                 if(response.ok){
                     let returnString = await response.text()
-
+                                            // NIGGER
                     if(EC == 'c'){
                         USER.ctecka = `${USER.currDir}/${USER.selected}`
                         USER.cteckaContent = returnString
@@ -259,7 +259,7 @@
             }
         }
         async function saveChanges(){
-
+2
             if(window.confirm("opravdu chtete ulozit zmeny?" !== null)){
 
                 let url = `http://localhost/php/projektZWA/proces4.php`
