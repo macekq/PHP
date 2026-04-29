@@ -259,7 +259,7 @@
             }
         }
         async function saveChanges(){
-2
+
             if(window.confirm("opravdu chtete ulozit zmeny?" !== null)){
 
                 let url = `http://localhost/php/projektZWA/proces4.php`
